@@ -3,7 +3,7 @@ import 'dart:html' as html;
 
 import 'package:flutter/material.dart';
 import 'package:flutter/rendering.dart';
-import './itemspage.dart';
+import 'dashboard.dart';
 
 void main() => runApp(MyApp());
 
@@ -25,13 +25,24 @@ class MyHomePage extends StatefulWidget {
   final String title;
 
   @override
-  _MyHomePageState createState() => _MyHomePageState();
+  _MyHomePageState createState() => _MyHomePageState(this.title);
 }
 
 class _MyHomePageState extends State<MyHomePage> {
-  String _password, _username;
+  String _password, _username, _title;
   bool _passwordVal, _usernameVal;
   double height, width;
+
+  _MyHomePageState(this._title);
+  Color getColor(Set<MaterialState> states) {
+      const Set<MaterialState> interactiveStates = <MaterialState>{
+        MaterialState.selected,
+      };
+      if (states.any(interactiveStates.contains)) {
+        return Color.fromARGB(255, 31, 27, 62);
+      }
+      return Colors.white;
+    }
 
   @override
   Widget build(BuildContext context) {
@@ -39,21 +50,21 @@ class _MyHomePageState extends State<MyHomePage> {
     width = MediaQuery.of(context).size.width;
 
     return Scaffold(
-      backgroundColor: Color.fromARGB(255, 31, 27, 62),
+      backgroundColor: Colors.white,
       appBar: AppBar(
         elevation: 0.0,
         centerTitle: true,
         title: Text(
-          widget.title,
+          this._title,
           style: TextStyle(
-            color: Colors.white,
+            color: Colors.black,
             fontFamily: "FiraSans",
             fontStyle: FontStyle.italic,
             fontWeight: FontWeight.w400,
             fontSize: height * 0.05,
           ),
         ),
-        backgroundColor: Color.fromARGB(255, 31, 27, 62),
+        backgroundColor: Colors.white,
       ),
       body: Row(children: [
         //App Download Link Side
@@ -63,7 +74,7 @@ class _MyHomePageState extends State<MyHomePage> {
             alignment: Alignment.center,
             children: [
               Image.asset(
-                "assets/Images/02_formfield.jpg",
+                "assets/Images/01_formfield.jpg",
               ),
               BackdropFilter(
                 filter: ImageFilter.blur(
@@ -91,7 +102,7 @@ class _MyHomePageState extends State<MyHomePage> {
                             fontStyle: FontStyle.italic,
                             fontWeight: FontWeight.w400,
                             fontFamily: "FiraSans",
-                            color: Colors.white,
+                            color: Colors.black,
                             fontSize: height * 0.08,
                           ),
                         ),
@@ -106,7 +117,7 @@ class _MyHomePageState extends State<MyHomePage> {
                           fontStyle: FontStyle.italic,
                           fontWeight: FontWeight.w200,
                           fontFamily: "FiraSans",
-                          color: Colors.white,
+                          color: Colors.black,
                           fontSize: height * 0.04,
                         ),
                       ),
@@ -120,7 +131,7 @@ class _MyHomePageState extends State<MyHomePage> {
                           IconButton(
                             icon: Icon(
                               Icons.play_arrow,
-                              color: Colors.white,
+                              color: Colors.black,
                             ),
                             iconSize: height * 0.1,
                             onPressed: () {
@@ -135,7 +146,7 @@ class _MyHomePageState extends State<MyHomePage> {
                           IconButton(
                             icon: Icon(
                               Icons.shopping_basket_rounded,
-                              color: Colors.white,
+                              color: Colors.black,
                             ),
                             iconSize: height * 0.1,
                             onPressed: () {
@@ -172,11 +183,12 @@ class _MyHomePageState extends State<MyHomePage> {
                             fontStyle: FontStyle.italic,
                             fontWeight: FontWeight.w400,
                             fontFamily: "FiraSans",
-                            color: Colors.white,
+                            color: Colors.black,
                             fontSize: height * 0.06,
                           ),
                         ),
                       ),
+                      //Text (Lorem Ipsum)
                       Expanded(
                         flex: 1,
                         child: Text(
@@ -185,11 +197,12 @@ class _MyHomePageState extends State<MyHomePage> {
                             fontStyle: FontStyle.italic,
                             fontWeight: FontWeight.w200,
                             fontFamily: "FiraSans",
-                            color: Colors.white,
+                            color: Colors.black,
                             fontSize: height * 0.04,
                           ),
                         ),
                       ),
+                      // Text (Lorem Ipsum)
                       Expanded(
                         flex: 1,
                         child: Text(
@@ -198,7 +211,7 @@ class _MyHomePageState extends State<MyHomePage> {
                             fontStyle: FontStyle.italic,
                             fontWeight: FontWeight.w200,
                             fontFamily: "FiraSans",
-                            color: Colors.white,
+                            color: Colors.black,
                             fontSize: height * 0.04,
                           ),
                         ),
@@ -239,7 +252,7 @@ class _MyHomePageState extends State<MyHomePage> {
                             //Text Field (Username)
                             Container(
                               child: TextField(
-                                cursorColor: Colors.white,
+                                cursorColor: Colors.black,
                                 decoration: InputDecoration(
                                     hintStyle: TextStyle(
                                         fontStyle: FontStyle.italic,
@@ -248,7 +261,7 @@ class _MyHomePageState extends State<MyHomePage> {
                                         fontFamily: "FiraSans"),
                                     hintText: "Enter Username",
                                     enabledBorder: UnderlineInputBorder(
-                                        borderSide: BorderSide(color: Colors.white)),),
+                                        borderSide: BorderSide(color: Colors.black)),),
                                 onChanged: (username) {
                                   setState(() {
                                     _usernameVal = true;
@@ -275,7 +288,7 @@ class _MyHomePageState extends State<MyHomePage> {
                                     ),
                                     hintText: "Enter Password",
                                     enabledBorder: UnderlineInputBorder(
-                                        borderSide: BorderSide(color: Colors.white)),),
+                                        borderSide: BorderSide(color: Colors.black)),),
                                 onChanged: (password) {
                                   setState(() {
                                     _passwordVal = true;
@@ -298,16 +311,17 @@ class _MyHomePageState extends State<MyHomePage> {
                             style: TextStyle(
                               fontStyle: FontStyle.italic,
                               fontWeight: FontWeight.w200,
-                              color: Colors.white,
+                              color: Colors.black,
                               fontSize: 26.0,
                               fontFamily: "FiraSans",
                             ),
                           ),
+                          style: ButtonStyle(backgroundColor: MaterialStateProperty.resolveWith((states) => this.getColor(states))),
                           onPressed: () {
                             if (_username == "FormField" && _password == "12345678") {
                               Navigator.push(context,
                                   MaterialPageRoute(builder: (context) {
-                                return ItemsPage();
+                                return Dashboard(_username);
                               }));
                             }
                           },
@@ -333,20 +347,20 @@ class _MyHomePageState extends State<MyHomePage> {
                                     fontSize: 20.0,
                                     fontStyle: FontStyle.italic,
                                     fontWeight: FontWeight.w200,
-                                    color: Colors.white),
+                                    color: Colors.black),
                               ),
                             ),
                             // Icon (Twitter)
                             Expanded(
                                 child: Icon(
                               Icons.account_balance,
-                              color: Colors.white,
+                              color: Colors.black,
                             )),
                             //Icon (Facebook)
                             Expanded(
                               child: Icon(
                                 Icons.query_builder_rounded,
-                                color: Colors.white,
+                                color: Colors.black,
                               ),
                             ),
                           ],
@@ -373,13 +387,13 @@ class _MyHomePageState extends State<MyHomePage> {
                 context: context,
                 builder: (BuildContext context) {
                   return AlertDialog(
-                    backgroundColor: Color.fromARGB(255, 31, 27, 62),
+                    backgroundColor: Colors.white,
                     title: Text(
                       "Want to know more about the application?\nMessage us on our website",
                       style: TextStyle(
                         fontStyle: FontStyle.italic,
                         fontWeight: FontWeight.w200,
-                        color: Colors.white,
+                        color: Colors.black,
                         fontSize: 20.0,
                         fontFamily: "FiraSans",
                       ),
@@ -391,7 +405,7 @@ class _MyHomePageState extends State<MyHomePage> {
                         },
                         icon: Icon(
                           Icons.open_in_browser_rounded,
-                          color: Colors.white,
+                          color: Colors.black,
                         ),
                       )
                     ],
