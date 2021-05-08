@@ -40,9 +40,9 @@ dev_dependencies:
 flutter:
   uses-material-design: true
   assets:
-    - assets/Images/01_formfield.jpg
-    - assets/Images/02_formfield.jpg
-    - assets/Images/03_formfield.jpg
+    - assets/Images/logo_1.jpg
+    - assets/Images/logo_2.jpg
+    - assets/Images/logo_3.jpg
 
   # An image asset can refer to one or more resolution-specific "variants", see
   # https://flutter.dev/assets-and-images/#resolution-aware.

@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'dart:ui';
 import 'package:flutter/rendering.dart';
+import 'package:inventory_management_web/itemspage.dart';
 
 class Dashboard extends StatefulWidget {
   final String username;
@@ -12,79 +13,90 @@ class Dashboard extends StatefulWidget {
 class _Dashboard extends State<Dashboard> {
   String username;
   double h, w;
+  Widget currScrn;
   _Dashboard(user) {
     this.username = user;
   }
   Widget build(BuildContext context) {
     h = MediaQuery.of(context).size.height;
     w = MediaQuery.of(context).size.width;
+    currScrn = Container(height: 160,width: 90,color: Colors.black,);
 
-    return Scaffold(
-      backgroundColor: Colors.white,
-      drawer: Drawer(
-        elevation: 10.0,
-        child: ListView(
-          children: [
-            ListTile(
-              hoverColor: Color.fromARGB(255, 31, 47, 102),
-              leading: Container(
-                height: h * 0.016,
-                width: h * 0.016,
-                child: Icon(Icons.arrow_right_rounded),
-              ),
-            ),
-            ListTile(
-              hoverColor: Color.fromARGB(255, 31, 47, 102),
-              leading: Container(
-                height: h * 0.016,
-                width: h * 0.016,
-                child: Icon(Icons.arrow_right_rounded),
-              ),
-            ),
-            ListTile(
-              hoverColor: Color.fromARGB(255, 31, 47, 102),
-              leading: Container(
-                height: h * 0.016,
-                width: h * 0.016,
-                child: Icon(Icons.arrow_right_rounded),
-              ),
-            ),
-            ListTile(
-              hoverColor: Color.fromARGB(255, 31, 47, 102),
-              leading: Container(
-                height: h * 0.016,
-                width: h * 0.016,
-                child: Icon(Icons.arrow_right_rounded),
-              ),
-            ),
-          ],
-        ),
-      ),
-      appBar: AppBar(
+    return SafeArea(
+      child: Scaffold(
         backgroundColor: Colors.white,
-        centerTitle: false,
-        elevation: 0.0,
-        title: Text(
-          "Welcome, " + this.username,
-          style: TextStyle(color: Colors.black),
+        drawer: Drawer(
+          elevation: 10.0,
+          child: ListView(
+            children: [
+              //ListTile (OverView)
+              ListTile(
+                hoverColor: Color.fromARGB(255, 31, 47, 102),
+                leading: Icon(Icons.arrow_right_rounded),
+                title: Text("Overview"),
+                onTap: () {
+                  setState(() {
+                    currScrn = ItemsPage();
+                  });
+                },
+              ),
+              //ListTile (Machines Page)
+              ListTile(
+                hoverColor: Color.fromARGB(255, 31, 47, 102),
+                leading: Icon(Icons.arrow_right_rounded),
+                title: Text("Machines Page"),
+                onTap: () {
+                  setState(() {
+                    currScrn = ItemsPage();
+                  });
+                },
+              ),
+              //ListTile (Tasks Overview)
+              ListTile(
+                hoverColor: Color.fromARGB(255, 31, 47, 102),
+                leading: Icon(Icons.arrow_right_rounded),
+                title: Text("Machines Page"),
+                onTap: () {
+                  setState(() {
+                    currScrn = ItemsPage();
+                  });
+                },
+              ),
+              //ListTile (Create Machine Page)
+              ListTile(
+                hoverColor: Color.fromARGB(255, 31, 47, 102),
+                leading: Icon(Icons.arrow_right_rounded),
+                title: Text("Create Machine Page"),
+                onTap: () {
+                  setState(() {
+                    currScrn = ItemsPage();
+                  });
+                },
+              ),
+              //ListTile (Settings)
+              ListTile(
+                hoverColor: Color.fromARGB(255, 31, 47, 102),
+                leading: Icon(Icons.arrow_right_rounded),
+                title: Text("Machines Page"),
+                onTap: () {
+                  setState(() {
+                    currScrn = ItemsPage();
+                  });
+                },
+              ),
+            ],
+          ),
         ),
-      ),
-      body: Column(
-        mainAxisAlignment: MainAxisAlignment.center,
-        children: [
-          Expanded(
-            flex: 1,
-            child: Placeholder(),
+        appBar: AppBar(
+          backgroundColor: Colors.white,
+          centerTitle: false,
+          elevation: 0.0,
+          title: Text(
+            "Welcome, " + this.username,
+            style: TextStyle(color: Colors.black),
           ),
-          Expanded(
-            flex: 1,
-            child: Placeholder(),
-          ),
-          Expanded(
-            flex: 10,
-            child: Placeholder(),
-          ),
-        ],
+        ),
+        body: currScrn,
       ),
     );
   }
