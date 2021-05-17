@@ -1,12 +1,17 @@
+// ignore: unused_import
 import 'dart:ui';
-import 'dart:html' as html;
 
 import 'package:flutter/material.dart';
+// ignore: unused_import
 import 'package:flutter/rendering.dart';
-import 'package:inventory_management_web/login_page.dart';
-import 'dashboard.dart';
+import 'package:inventory_management_web/Screens/LoginPage.dart';
+import 'PageViews/LocatorTool.dart';
+import 'Screens/LoginPage.dart';
 
-void main() => runApp(MyApp());
+void main() {
+  setupLocator();
+  runApp(MyApp());
+}
 
 class MyApp extends StatelessWidget {
   // This widget is the root of your application.
@@ -30,12 +35,12 @@ class MyHomePage extends StatefulWidget {
 }
 
 class _MyHomePageState extends State<MyHomePage> {
+  // ignore: unused_field
   String _title;
   _MyHomePageState(this._title);
-  
 
   @override
   Widget build(BuildContext context) {
-    return Dashboard("King Alpha");
+    return LoginPage();
   }
 }

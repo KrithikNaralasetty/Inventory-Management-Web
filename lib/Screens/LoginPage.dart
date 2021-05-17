@@ -1,8 +1,10 @@
 import 'dart:ui';
+// ignore: avoid_web_libraries_in_flutter
 import 'dart:html' as html;
 import 'package:flutter/material.dart';
 import 'package:flutter/rendering.dart';
-import 'dashboard.dart';
+import 'package:inventory_management_web/Data/mechs.dart';
+import 'MainPage.dart';
 
 class LoginPage extends StatefulWidget {
   const LoginPage({Key key}) : super(key: key);
@@ -13,8 +15,11 @@ class LoginPage extends StatefulWidget {
 class _LoginPageState extends State<LoginPage> {
   double height, width;
   String _title = "Form Field";
+  var users = admins;
   String _username, _password;
-  bool _usernameVal, _passwordVal;
+  // ignore: unused_field
+  bool _usernameVal;
+  int _usernameIndex;
 
   Color getColor(Set<MaterialState> states) {
     const Set<MaterialState> interactiveStates = <MaterialState>{
@@ -56,7 +61,7 @@ class _LoginPageState extends State<LoginPage> {
             alignment: Alignment.center,
             children: [
               Image.asset(
-                "assets/Images/01_formfield.jpg",
+                "assets/Images/logo_1.jpg",
               ),
               BackdropFilter(
                 filter: ImageFilter.blur(
@@ -277,7 +282,6 @@ class _LoginPageState extends State<LoginPage> {
                                 ),
                                 onChanged: (password) {
                                   setState(() {
-                                    _passwordVal = true;
                                     _password = password;
                                     debugPrint(_password);
                                   });
@@ -307,12 +311,27 @@ class _LoginPageState extends State<LoginPage> {
                                   MaterialStateProperty.resolveWith(
                                       (states) => this.getColor(states))),
                           onPressed: () {
-                            if (_username == "FormField" &&
-                                _password == "12345678") {
-                              Navigator.push(context,
-                                  MaterialPageRoute(builder: (context) {
-                                return Dashboard(_username);
-                              }));
+                            _usernameVal = false;
+                            int n = users["uname"].length;
+                            for (var i = 0; i < n; i++) {
+                              if (users["uname"][i] == _username) {
+                                _usernameVal = true;
+                                _usernameIndex = i;
+                                debugPrint(_username);
+                                debugPrint("$_usernameIndex");
+                                debugPrint("$_usernameVal");
+                                break;
+                              }
+                            }
+                            if (_usernameVal == true) {
+                              var x = users["psswd"][_usernameIndex];
+                              debugPrint("$x");
+                              if ( "$x"== _password) {
+                                Navigator.push(context,
+                                    MaterialPageRoute(builder: (context) {
+                                  return MainPage(_username);
+                                }));
+                              }
                             }
                           },
                         ))

@@ -13,6 +13,7 @@ class _SearchMenu extends State<SearchMenu> {
   _SearchMenu(this.username);
 
 
+  // ignore: unused_element
   Future _getMachines(srcData) async{
     Future machines;
     return machines;
