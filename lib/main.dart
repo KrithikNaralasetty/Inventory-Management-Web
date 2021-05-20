@@ -4,9 +4,10 @@ import 'dart:ui';
 import 'package:flutter/material.dart';
 // ignore: unused_import
 import 'package:flutter/rendering.dart';
+// ignore: unused_import
 import 'package:inventory_management_web/Screens/LoginPage.dart';
+import 'package:inventory_management_web/Screens/MainPage.dart';
 import 'PageViews/LocatorTool.dart';
-import 'Screens/LoginPage.dart';
 
 void main() {
   setupLocator();
@@ -41,6 +42,6 @@ class _MyHomePageState extends State<MyHomePage> {
 
   @override
   Widget build(BuildContext context) {
-    return LoginPage();
+    return MainPage("Alpha");
   }
 }

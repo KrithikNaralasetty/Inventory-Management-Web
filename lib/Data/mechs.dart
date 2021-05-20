@@ -1,4 +1,7 @@
 // ignore: non_constant_identifier_names
+import 'package:flutter/material.dart';
+import 'dart:io';
+
 var Mechs = {
   "eqtype": eqtps(),
   "brand": [
@@ -40,7 +43,7 @@ var services = {
   "dos": dates("2019"),
   "worker_id": [196,202,998,423,695,791,643,80,44,1],
   "record" : ["A","B","C","D","E","F","G","H","I","J"],
-  "cleared" : [true,false,true,false,true,false,true,false,true,false],
+  "working" : [true,false,true,false,true,false,true,false,true,false],
 };
 
 var workers = {

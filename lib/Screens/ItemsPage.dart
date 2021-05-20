@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import '../Data/mechs.dart';
 
 class ItemsPage extends StatefulWidget {
   @override
@@ -15,56 +16,7 @@ class ItemsPageState extends State<ItemsPage> {
       boxShadow: [
         BoxShadow(offset: Offset(0, 10.0), color: Colors.grey, blurRadius: 10.0)
       ]);
-  var data = [
-    {
-      "dos": "12/10/2016",
-      "worker": "Alpha",
-      "uid": "mechazpo1234a",
-      "working": true,
-    },
-    {
-      "dos": "12/9/2016",
-      "worker": "Beta",
-      "uid": "mechazpo1234b",
-      "working": false,
-    },
-    {
-      "dos": "12/8/2016",
-      "worker": "Gamma",
-      "uid": "mechazpo1234c",
-      "working": true,
-    },
-    {
-      "dos": "12/10/2016",
-      "worker": "Delta",
-      "uid": "mechazpo1234d",
-      "working": false,
-    },
-    {
-      "dos": "12/10/2016",
-      "worker": "Omega",
-      "uid": "mechazpo1234e",
-      "working": true,
-    },
-    {
-      "dos": "12/10/2016",
-      "worker": "Epsilon",
-      "uid": "mechazpo1234f",
-      "working": false,
-    },
-    {
-      "dos": "12/10/2016",
-      "worker": "Pho",
-      "uid": "mechazpo1234g",
-      "working": true,
-    },
-    {
-      "dos": "12/10/2016",
-      "worker": "Gelapha",
-      "uid": "mechazpo1234h",
-      "working": false,
-    },
-  ];
+  var data = services;
 
   @override
   void initState() { 
@@ -199,19 +151,19 @@ class ItemsPageState extends State<ItemsPage> {
                         child: Row(
                           children: <Widget>[
                             Expanded(
-                              child: Center(child: Text(data[index]["dos"]),),
+                              child: Center(child: Text(data["dos"][index]),),
                             ),
                             Expanded(
-                              child: Center(child: Text(data[index]["worker"]),),
+                              child: Center(child: Text(data["worker_id"][index]),),
                             ),
                             Expanded(
-                              child: Center(child: Text(data[index]["uid"]),),
+                              child: Center(child: Text(data["uid"][index]),),
                             ),
                             Expanded(
                               child: Center(child: Text("Not Completed"),),
                             ),
                             Expanded(
-                              child: Center(child: getIcon(data[index]["working"]),),
+                              child: Center(child: getIcon(data["working"][index]),),
                             ),
                           ],
                         ),

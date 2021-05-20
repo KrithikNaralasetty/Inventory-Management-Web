@@ -3,8 +3,12 @@ import 'dart:ui';
 // ignore: avoid_web_libraries_in_flutter
 import 'dart:html' as html;
 import 'package:flutter/rendering.dart';
+import 'package:inventory_management_web/Data/ColorData.dart';
 import 'package:inventory_management_web/PageViews/LocatorTool.dart';
 import 'package:inventory_management_web/PageViews/NavigationServiceTool.dart';
+// ignore: unused_import
+import 'package:inventory_management_web/data/ColorData.dart' as cd;
+// ignore: unused_import
 import 'package:inventory_management_web/Screens/SearchMenu.dart';
 
 class MainPage extends StatefulWidget {
@@ -34,28 +38,27 @@ class _Dashboard extends State<MainPage> {
           elevation: 10.0,
           child: ListView(
             children: [
-              //Image Icon
+              //User Account Details
               UserAccountsDrawerHeader(
                 decoration: BoxDecoration(
                   color: Color.fromARGB(255, 31, 27, 62),
                 ),
                 currentAccountPicture: Image.asset("assets/Images/logo_1.jpg"),
                 accountName: Text(
-                  this.username,
+                  "Admin: $username",
                 ),
                 accountEmail: TextButton(
                   child: Text(
-                    "formfielduser@gmail.com",
+                    "admin$username@formfield.com",
                     style: TextStyle(color: Colors.white),
                   ),
                   onPressed: () {
-                    html.window.open("https://www.google.com", "nice");
+                    html.window.open("https://www.google.com", "Email");
                   },
                 ),
               ),
               //ListTile (OverView)
               new ListTile(
-                hoverColor: Color.fromARGB(255, 31, 47, 102),
                 leading: Icon(Icons.arrow_right_rounded),
                 title: Text("Overview"),
                 onTap: () {
@@ -69,7 +72,6 @@ class _Dashboard extends State<MainPage> {
               ),
               //ListTile (Machines Page)
               new ListTile(
-                hoverColor: Color.fromARGB(255, 31, 47, 102),
                 leading: Icon(Icons.arrow_right_rounded),
                 title: Text("Machines Page"),
                 onTap: () {
@@ -83,7 +85,6 @@ class _Dashboard extends State<MainPage> {
               ),
               //ListTile (Tasks Overview)
               new ListTile(
-                hoverColor: Color.fromARGB(255, 31, 47, 102),
                 leading: Icon(Icons.arrow_right_rounded),
                 title: Text("Tasks"),
                 onTap: () {
@@ -97,7 +98,6 @@ class _Dashboard extends State<MainPage> {
               ),
               //ListTile (Create Machine Page)
               new ListTile(
-                hoverColor: Color.fromARGB(255, 31, 47, 102),
                 leading: Icon(Icons.arrow_right_rounded),
                 title: Text("Add/Create New Machine"),
                 onTap: () {
@@ -111,7 +111,6 @@ class _Dashboard extends State<MainPage> {
               ),
               //ListTile (Settings)
               new ListTile(
-                hoverColor: Color.fromARGB(255, 31, 47, 102),
                 leading: Icon(Icons.arrow_right_rounded),
                 title: Text("Settings"),
                 onTap: () {
@@ -125,7 +124,9 @@ class _Dashboard extends State<MainPage> {
               ),
               // ListTile (LogOut)
               new ListTile(
-                title: Text("Logout"),onTap: (){
+                leading: Icon(Icons.power_settings_new),
+                title: Text("Logout"),
+                onTap: () {
                   Navigator.of(context).pop();
                   Navigator.of(context).pop();
                 },
@@ -133,28 +134,33 @@ class _Dashboard extends State<MainPage> {
             ],
           ),
         ),
+        // Appbar (Welcome admin, Icon(about the application), Image(profile picture))
         appBar: new AppBar(
-          backgroundColor: Colors.white,
-          centerTitle: false,
+          backgroundColor: Colors.transparent,
           elevation: 0.0,
           title: Text(
-            "Welcome, " + this.username,
-            style: TextStyle(color: Colors.black),
+            "Welcome, $username",
+            style: TextStyle(color: primary),
           ),
-          iconTheme: IconThemeData(color: Colors.black),
-          
+          iconTheme: IconThemeData(color: iconColor),
+          centerTitle: true,
         ),
-        body: Column(
-          children: [
-            Expanded(child: SearchMenu(), flex: 12),
-            Expanded(
-                child: Navigator(
-                  key: locator<NavigationService>().navigatorkey,
-                  onGenerateRoute: generateRoute,
-                  initialRoute: overviewPageRoute,
-                ),
-                flex: 88),
-          ],
+        //Body (Column of Screens)
+        body: Container(
+          padding: EdgeInsets.only(
+              left: w * 0.04, right: w * 0.04, top: h * 0.03, bottom: h * 0.03),
+          child: Column(
+            children: [
+              // Expanded(child: SearchMenu(), flex: 12),
+              Expanded(
+                  child: Navigator(
+                    key: locator<NavigationService>().navigatorkey,
+                    onGenerateRoute: generateRoute,
+                    initialRoute: overviewPageRoute,
+                  ),
+                  flex: 88),
+            ],
+          ),
         ),
       ),
     );
