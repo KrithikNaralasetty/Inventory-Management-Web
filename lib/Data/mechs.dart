@@ -1,7 +1,10 @@
 // ignore: non_constant_identifier_names
+// ignore: unused_import
 import 'package:flutter/material.dart';
+// ignore: unused_import
 import 'dart:io';
 
+// ignore: non_constant_identifier_names
 var Mechs = {
   "eqtype": eqtps(),
   "brand": [
@@ -56,6 +59,12 @@ var admins = {
   "psswd" : [196,202,998,423,695,791,643,80,44,1],
 };
 
+
+
+
+
+
+
 Map<String, String> equipments = {
   "conv": "conveyor_belt",
   "cthy": "cutting_hydraulics",
@@ -69,7 +78,7 @@ List<String> tps = ["alpha","beta","gamma","delta","omega"];
 
 List<String> eqtps() {
   List<String> eqs = [];
-  var i, j;
+  var i, j, k;
   for (j = 0; j < 4; j++) {
     for (i in equipments.keys) {
       eqs.add(i);
@@ -104,7 +113,7 @@ List<int> serials(){
 List<String> dates(String s){
   List<String> d = [];
   var c = 1;
-  for(var i=0;i<4;i++){
+  for(var i=0;i<2;i++){
     for (var j=0;j<5;j++){
       d.add((c.toString())+"-12-"+s);
       c = c+1;

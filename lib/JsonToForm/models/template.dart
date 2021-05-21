@@ -1,0 +1,3 @@
+class FormTemplate{
+  List template = [];
+}

@@ -28,6 +28,11 @@ dependencies:
   qr_flutter:
   qrscan:
   path_provider:
+  charts_flutter:
+  giffy_dialog:
+  http:
+  json_to_form:
+    path: assets/jsontoform/
 
 
   # The following adds the Cupertino Icons font to your application.

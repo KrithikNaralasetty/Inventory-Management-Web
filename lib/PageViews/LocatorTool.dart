@@ -9,12 +9,14 @@ import 'Pages/AddMachinePage.dart';
 import 'Pages/MachinePage.dart';
 import 'Pages/SettingPage.dart';
 import 'Pages/TasksPage.dart';
+import 'Pages/TemplatesListPage.dart';
 
 const String overviewPageRoute = "OveriewPage";
 const String machinePageRoute = "MachinesPage";
 const String tasksPageRoute = "TasksPage";
 const String addMachinePageRoute = "AddMachinePage";
 const String settingsPageRoute = "SettingsPage";
+const String templatesPageRoute = "TemplatesListPage";
 
 Route<dynamic> generateRoute(RouteSettings settings){
   switch (settings.name) {
@@ -33,6 +35,8 @@ Route<dynamic> generateRoute(RouteSettings settings){
     case settingsPageRoute:
       return _getPageRoute(SettingsPage());
       break;
+    case templatesPageRoute:
+      return _getPageRoute(TemplatesListPage());
     default:
       return _getPageRoute(Overview());
   }
