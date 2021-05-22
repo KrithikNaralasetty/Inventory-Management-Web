@@ -5,7 +5,7 @@ import 'package:inventory_management_web/Data/ColorData.dart';
 import 'package:inventory_management_web/PageViews/LocatorTool.dart';
 import 'package:inventory_management_web/PageViews/NavigationServiceTool.dart';
 import 'package:inventory_management_web/data/ColorData.dart' as cd;
-import 'package:inventory_management_web/Data/mechs.dart';
+import 'package:inventory_management_web/Data/TablesData.dart' as data;
 import 'dart:io';
 // ignore: unused_import
 import 'dart:ui' as ui;
@@ -15,16 +15,13 @@ import 'package:qr_flutter/qr_flutter.dart';
 // ignore: must_be_immutable
 class Overview extends StatefulWidget {
   Overview({Key key}) : super(key: key);
-  var mechs = Mechs;
-  _OverviewState createState() => _OverviewState(mechs);
+  _OverviewState createState() => _OverviewState();
 }
 
 class _OverviewState extends State<Overview> {
-  var mechs, srvs = services, wrks = workers, adms = admins, tmpts = templates;
 
-  String qrCode = "mech0101qwx";
   double h, w;
-  int tasks = services["working"].length;
+  int tasks = data.records.length;
   // ignore: non_constant_identifier_names
 
   Color getWorking(bool value) {
@@ -34,22 +31,14 @@ class _OverviewState extends State<Overview> {
     return Colors.red;
   }
 
-  List<Widget> get_pend_tasks(var s) {
-    List<Widget> pt = [
-      SizedBox(
-        height: 20.0,
-      ),
-      Center(
-        child: Text(
-          "Pending Tasks: $tasks",
-          style: textSt,
-        ),
-      ),
-    ];
-    var works = s["working"];
-    var dates = s["dos"];
-    var desc = s["record"];
-    for (var i = 0; i < tasks; i++) {
+  List<Widget> get_pend_tasks() {
+    List<Widget> pt = [];
+    var tasks = data.records;
+    
+    for (var i = 0; i < tasks.length; i++) {
+    var works = tasks[i].status;
+    var dates = tasks[i].dos;
+    var desc = tasks[i].uid;
       pt.add(Container(
         padding: EdgeInsets.all(10.0),
         child: ListTile(
@@ -59,16 +48,16 @@ class _OverviewState extends State<Overview> {
             color: iconColor,
           ),
           subtitle: Text(
-            dates[i].toString(),
+            dates.toString(),
             style: textSt,
           ),
           title: Text(
-            desc[i].toString(),
+            desc.toString(),
             style: textSt,
           ),
           trailing: Icon(
             Icons.work,
-            color: getWorking(works[i]),
+            color: getWorking(works),
           ),
         ),
       ));
@@ -77,6 +66,7 @@ class _OverviewState extends State<Overview> {
   }
 
   List<Widget> get_equipments() {
+    var mcns = data.machines;
     List<Widget> eq = [
       SizedBox(
         height: 20.0,
@@ -88,8 +78,13 @@ class _OverviewState extends State<Overview> {
         ),
       ),
     ];
-    var eqs = equipments;
-    for (var i in eqs.keys) {
+    List eqs = [];
+    for (var i=0; i <mcns.length;i++){
+      if (eqs.contains(mcns[i].eqtype) == false){
+        eqs.add(mcns[i].eqtype);
+      }
+    }
+    for (var i in eqs) {
       eq.add(Container(
         padding: EdgeInsets.all(5.0),
         child: ListTile(
@@ -99,7 +94,7 @@ class _OverviewState extends State<Overview> {
             color: iconColor,
           ),
           title: Text(
-            eqs[i],
+            i.toString(),
             style: textSt,
           ),
           trailing: Icon(
@@ -124,16 +119,15 @@ class _OverviewState extends State<Overview> {
         ),
       ),
     ];
-    var temp = this.srvs;
-    var srvs = this.srvs;
-    int len = srvs["dos"].length;
-    for (var i = len - 1; i >= 0; i--) {
+    var srvs = data.records;
+    int len = srvs.length;
+    for (var i = 0; i < len; i++) {
       srvices.add(
         ListTile(
-          title: Text(srvs["sno"][i].toString() +
+          title: Text(srvs[i].sno.toString() +
               " " +
-              srvs["worker_id"][i].toString()),
-          subtitle: Text(srvs["dos"][i].toString()),
+              srvs[i].wid_s.toString()),
+          subtitle: Text(srvs[i].dos.toString()),
           leading: Icon(
             Icons.arrow_right_alt,
             color: iconColor,
@@ -163,8 +157,8 @@ class _OverviewState extends State<Overview> {
           Expanded(
               child: IconButton(
                   onPressed: () {
-                    locator<NavigationService>().goBack();
-                    locator<NavigationService>().navigateTo(machinePageRoute);
+                    pageLocator<PageNavigationService>().goBack();
+                    pageLocator<PageNavigationService>().navigateTo(machinePageRoute);
                   },
                   icon: Icon(
                     Icons.menu,
@@ -173,13 +167,12 @@ class _OverviewState extends State<Overview> {
         ],
       )
     ];
-    var mcs = this.mechs;
-    var eqs = equipments;
-    int len = mcs["uid"].length;
+    var mcs = data.machines;
+    int len = mcs.length;
     for (var i = 0; i < len; i++) {
       machns.add(ListTile(
-        title: Text(eqs[mcs["eqtype"][i]].toString()),
-        subtitle: Text(mcs["sno"][i].toString()),
+        title: Text(mcs[i].eqtype.toString()),
+        subtitle: Text(mcs[i].sno.toString()),
         leading: Icon(
           Icons.reviews_rounded,
           color: iconColor,
@@ -212,16 +205,16 @@ class _OverviewState extends State<Overview> {
             child: IconButton(
               icon: Icon(Icons.menu, color: iconColor),
               onPressed: () {
-                locator<NavigationService>().goBack();
-                locator<NavigationService>().navigateTo(templatesPageRoute);
+                pageLocator<PageNavigationService>().goBack();
+                pageLocator<PageNavigationService>().navigateTo(templatesPageRoute);
               },
             ),
           )
         ],
       )
     ];
-    var templates = this.tmpts;
-    int len = templates["tname"].length;
+    var templates = data.templates;
+    int len = templates.length;
     for (var i = 0; i < len; i++) {
       templates_list.add(
         ListTile(
@@ -230,7 +223,7 @@ class _OverviewState extends State<Overview> {
             color: iconColor,
           ),
           title: Text(
-            templates["tname"][i].toString(),
+            templates[i].tname.toString(),
           ),
           trailing: Icon(
             Icons.check_box_outline_blank,
@@ -244,8 +237,8 @@ class _OverviewState extends State<Overview> {
 
   Widget get_workers_list() {
     List<Widget> worker_list = [];
-    var wrks = this.wrks;
-    int len = this.wrks["uname"].length;
+    var wrkrs = data.workers;
+    int len = wrkrs.length;
     for (var i = 0; i < len; i++) {
       worker_list.add(
         ListTile(
@@ -253,7 +246,7 @@ class _OverviewState extends State<Overview> {
             Icons.person,
             color: iconColor,
           ),
-          title: Text(wrks["uname"][i].toString()),
+          title: Text(wrkrs[i].wname.toString()),
           trailing: TextButton(
               onPressed: () {
                 showDialog(
@@ -319,7 +312,6 @@ class _OverviewState extends State<Overview> {
     return worker_card;
   }
 
-  _OverviewState(this.mechs);
   Widget build(BuildContext context) {
     h = MediaQuery.of(context).size.height;
     w = MediaQuery.of(context).size.width;
@@ -337,17 +329,58 @@ class _OverviewState extends State<Overview> {
               child: Card(
                 elevation: 20.0,
                 color: cd.primary,
-                child: Expanded(
-                  child: InkWell(
-                    child: ListView(
-                      children: get_pend_tasks(srvs),
-                    ),
-                    onLongPress: () {
-                      locator<NavigationService>().goBack();
-                      locator<NavigationService>().navigateTo(tasksPageRoute);
-                    },
+                child: FutureBuilder(
+                  future: data.getRecordData(),
+                  builder: (BuildContext context, AsyncSnapshot<dynamic> snapshot){
+                  if (snapshot.hasData){
+                    return Expanded(
+                  child: Column(
+                    children: [
+                      Expanded(
+                        child: Row(
+                          children: [
+                            Expanded(
+                              child: Container(
+                                color: primary,
+                              ),
+                            ),
+                            Expanded(
+                              flex: 4,
+                              child: Center(
+                                child: Text(
+                                  "Pending Tasks: $tasks",
+                                  style: textSt,
+                                ),
+                              ),
+                            ),
+                            Expanded(
+                                child: IconButton(
+                                    onPressed: () {
+                                      pageLocator<PageNavigationService>().goBack();
+                                      pageLocator<PageNavigationService>()
+                                          .navigateTo(tasksPageRoute);
+                                    },
+                                    icon: Icon(
+                                      Icons.menu,
+                                      color: iconColor,
+                                    )))
+                          ],
+                        ),
+                      ),
+                      Expanded(
+                        flex: 9,
+                        child: ListView(
+                          children: get_pend_tasks(),
+                        ),
+                      ),
+                    ],
                   ),
-                ),
+                );
+                  }
+                  else{
+                    return Center(child: CircularProgressIndicator(),);
+                  }
+                })
               ),
             ),
             //Types of Equipments
@@ -355,9 +388,17 @@ class _OverviewState extends State<Overview> {
               child: Card(
                 elevation: 20.0,
                 color: cd.primary,
-                child: ListView(
+                child: FutureBuilder(future: data.getMachineData(),
+                builder: (BuildContext context, AsyncSnapshot<dynamic> snapshot){
+                  if (snapshot.hasData){
+                    return ListView(
                   children: get_equipments(),
-                ),
+                );
+                  }
+                  else{
+                    return Center(child: CircularProgressIndicator(),);
+                  }
+                },),
               ),
             ),
             //Recent Machines under Service
@@ -365,9 +406,18 @@ class _OverviewState extends State<Overview> {
               child: Card(
                 elevation: 20.0,
                 color: cd.primary,
-                child: ListView(
+                child: FutureBuilder(
+                future: data.getRecordData(),
+                builder: (BuildContext context, AsyncSnapshot<dynamic> snapshot){
+                  if (snapshot.hasData){
+                    return ListView(
                   children: get_recent_services(),
-                ),
+                );
+                  }
+                  else{
+                    return Center(child: CircularProgressIndicator());
+                  }
+                }),
               ),
             ),
             //List of Machines
@@ -375,9 +425,16 @@ class _OverviewState extends State<Overview> {
               child: Card(
                 elevation: 20.0,
                 color: cd.primary,
-                child: ListView(
+                child: FutureBuilder(future: data.getMachineData(),builder: (BuildContext context, AsyncSnapshot<dynamic> snapshot){
+                  if (snapshot.hasData){
+                    return ListView(
                   children: get_machines_list(),
-                ),
+                );
+                  }
+                  else{
+                    return Center(child: CircularProgressIndicator(),);
+                  }
+                })
               ),
             ),
             //Templates Lists
@@ -385,19 +442,35 @@ class _OverviewState extends State<Overview> {
               child: Card(
                 elevation: 20.0,
                 color: cd.primary,
-                child: ListView(
+                child: FutureBuilder(future: data.getTemplateData(),builder: (BuildContext context, AsyncSnapshot<dynamic> snapshot){
+                  if (snapshot.hasData){
+                    return ListView(
                   children: get_templates_list(),
-                ),
+                );
+                  }
+                  else{
+                    return Center(child: CircularProgressIndicator(),);
+                  }
+                })
               ),
             ),
             //List of Workers
-            Container(
-              child: Card(
-                elevation: 20.0,
-                color: cd.primary,
-                child: get_workers_list(),
-              ),
-            ),
+            // Container(
+            //   child: Card(
+            //     elevation: 20.0,
+            //     color: cd.primary,
+            //     child: FutureBuilder(
+            //       future: data.getWorkerData(),
+            //       builder: (BuildContext context,AsyncSnapshot<dynamic> snapshot){
+            //       if (snapshot.hasData){
+            //         return get_workers_list();
+            //       }
+            //       else{
+            //         return Center(child: CircularProgressIndicator(),);
+            //       }
+            //     }),
+            //   ),
+            // ),
           ],
         ),
       ),

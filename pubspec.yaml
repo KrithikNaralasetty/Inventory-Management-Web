@@ -24,7 +24,8 @@ dependencies:
   flutter:
     sdk: flutter
   get_it:
-  pdf:
+  shared_preferences:
+  permission_handler:
   qr_flutter:
   qrscan:
   path_provider:

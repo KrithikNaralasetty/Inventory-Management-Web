@@ -18,7 +18,7 @@ const String addMachinePageRoute = "AddMachinePage";
 const String settingsPageRoute = "SettingsPage";
 const String templatesPageRoute = "TemplatesListPage";
 
-Route<dynamic> generateRoute(RouteSettings settings){
+Route<dynamic> generatePageRoute(RouteSettings settings){
   switch (settings.name) {
     case overviewPageRoute:
       return _getPageRoute(Overview());
@@ -42,12 +42,13 @@ Route<dynamic> generateRoute(RouteSettings settings){
   }
 }
 
+
 PageRoute _getPageRoute(Widget child){
   return MaterialPageRoute(builder: (context) => child);
 }
 
-GetIt locator = GetIt.instance;
+GetIt pageLocator = GetIt.instance;
 
-void setupLocator(){
-  locator.registerLazySingleton(() => NavigationService());
+void setupPageLocator(){
+  pageLocator.registerLazySingleton(() => PageNavigationService());
 }

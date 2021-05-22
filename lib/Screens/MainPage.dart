@@ -4,6 +4,7 @@ import 'dart:ui';
 import 'dart:html' as html;
 import 'package:flutter/rendering.dart';
 import 'package:inventory_management_web/Data/ColorData.dart';
+import 'package:inventory_management_web/Data/TablesData.dart';
 import 'package:inventory_management_web/PageViews/LocatorTool.dart';
 import 'package:inventory_management_web/PageViews/NavigationServiceTool.dart';
 // ignore: unused_import
@@ -64,8 +65,8 @@ class _Dashboard extends State<MainPage> {
               setState(() {
                 navigationPath = overviewPageRoute;
               });
-              locator<NavigationService>().goBack();
-              locator<NavigationService>().navigateTo(navigationPath);
+              pageLocator<PageNavigationService>().goBack();
+              pageLocator<PageNavigationService>().navigateTo(navigationPath);
             },
           ),
           //ListTile (Machines Page)
@@ -77,8 +78,8 @@ class _Dashboard extends State<MainPage> {
               setState(() {
                 navigationPath = machinePageRoute;
               });
-              locator<NavigationService>().goBack();
-              locator<NavigationService>().navigateTo(navigationPath);
+              pageLocator<PageNavigationService>().goBack();
+              pageLocator<PageNavigationService>().navigateTo(navigationPath);
             },
           ),
           //ListTile (Tasks Overview)
@@ -90,8 +91,8 @@ class _Dashboard extends State<MainPage> {
               setState(() {
                 navigationPath = tasksPageRoute;
               });
-              locator<NavigationService>().goBack();
-              locator<NavigationService>().navigateTo(navigationPath);
+              pageLocator<PageNavigationService>().goBack();
+              pageLocator<PageNavigationService>().navigateTo(navigationPath);
             },
           ),
           //ListTile (Create Machine Page)
@@ -103,8 +104,8 @@ class _Dashboard extends State<MainPage> {
               setState(() {
                 navigationPath = addMachinePageRoute;
               });
-              locator<NavigationService>().goBack();
-              locator<NavigationService>().navigateTo(navigationPath);
+              pageLocator<PageNavigationService>().goBack();
+              pageLocator<PageNavigationService>().navigateTo(navigationPath);
             },
           ),
           //ListTile (Settings)
@@ -116,8 +117,8 @@ class _Dashboard extends State<MainPage> {
               setState(() {
                 navigationPath = settingsPageRoute;
               });
-              locator<NavigationService>().goBack();
-              locator<NavigationService>().navigateTo(navigationPath);
+              pageLocator<PageNavigationService>().goBack();
+              pageLocator<PageNavigationService>().navigateTo(navigationPath);
             },
           ),
           // ListTile (LogOut)
@@ -156,8 +157,8 @@ class _Dashboard extends State<MainPage> {
               // Expanded(child: SearchMenu(), flex: 12),
               Expanded(
                   child: Navigator(
-                    key: locator<NavigationService>().navigatorkey,
-                    onGenerateRoute: generateRoute,
+                    key: pageLocator<PageNavigationService>().navigatorkey,
+                    onGenerateRoute: generatePageRoute,
                     initialRoute: overviewPageRoute,
                   ),
                   flex: 88),

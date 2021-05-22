@@ -30,21 +30,26 @@ class _MyHomePageState extends State<MyHomePage> {
   ElevatedButton bottom;
 
   @override
-  @mustCallSuper
   // ignore: must_call_super
   void initState() {
     bottom = ElevatedButton(
-      style: ButtonStyle(backgroundColor: MaterialStateProperty.resolveWith((states) => Colors.yellow),),
+      style: ButtonStyle(
+          backgroundColor: MaterialStateProperty.all(Colors.yellow)),
       child: Text(
         "Put Template",
         style: TextStyle(color: Color.fromARGB(250, 18, 70, 255)),
       ),
-      onPressed: () {
+      onPressed: () async {
         var formm = jsonEncode({
-          "tname":widget.tname,
-          "template":template,
+          "tname": widget.tname,
+          "template": jsonEncode(template),
         });
-        http.post("https://upnr.azurewebsites.net/puttemplate",body: formm);
+        Uri url = Uri.parse("https://formfield.azurewebsites.net/puttemplate");
+        var response = await http.post(url,
+            body: formm,
+            headers: {"Content-Type": "application/json"});
+        print(response.body);
+        print(formm);
 
 //        Navigator.push(context,
 //            MaterialPageRoute(builder: (context) => JsonBuilder(formm)));
@@ -234,7 +239,9 @@ class _MyHomePageState extends State<MyHomePage> {
                           ),
                         ),
                         ElevatedButton(
-                            style: ButtonStyle(backgroundColor: MaterialStateProperty.resolveWith((states) => Color.fromARGB(250, 18, 70, 255))),
+                            style: ButtonStyle(
+                                backgroundColor: MaterialStateProperty.all(
+                                    Color.fromARGB(250, 18, 70, 255))),
                             child: Text(
                               "Add item",
                               style: TextStyle(color: Colors.white),

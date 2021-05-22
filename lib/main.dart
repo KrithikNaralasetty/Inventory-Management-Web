@@ -7,10 +7,11 @@ import 'package:flutter/rendering.dart';
 // ignore: unused_import
 import 'package:inventory_management_web/Screens/LoginPage.dart';
 import 'package:inventory_management_web/Screens/MainPage.dart';
+import 'Data/TablesData.dart';
 import 'PageViews/LocatorTool.dart';
 
 void main() {
-  setupLocator();
+  setupPageLocator();
   runApp(MyApp());
 }
 
