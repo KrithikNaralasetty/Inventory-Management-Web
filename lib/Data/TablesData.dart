@@ -3,7 +3,6 @@
 import 'package:flutter/material.dart';
 // ignore: unused_import
 import 'dart:io';
-import 'package:http/http.dart' as http;
 import 'dart:convert';
 import 'package:inventory_management_web/Data/APIs.dart';
 
@@ -11,7 +10,23 @@ List<dynamic> machines = [];
 List<dynamic> templates = [];
 List<dynamic> records = [];
 List<dynamic> workers = [];
+//List of 2 maps
+//Map ("Pending": count)
+//Map ("Completed": count)
+List<TaskType> pendingTasks = [
+  new TaskType(name: "Pending", count: 0, color: Colors.greenAccent),
+  new TaskType(name: "Completed", count: 0, color: Colors.redAccent),
+];
 
+class TaskType {
+  String name;
+  int count;
+  Color color;
+  TaskType({@required this.name, @required this.count, @required this.color});
+  void setCount(int count){
+    this.count = count;
+  }
+}
 Future<dynamic> getMachineData() async {
   //Adding List of MachineData Objects
   var x = await api.getMachines();
@@ -21,6 +36,7 @@ Future<dynamic> getMachineData() async {
     var mcn = y[i];
     machines.add(new MachineData(mcn));
   }
+
   return x;
 }
 
@@ -43,12 +59,18 @@ Future<dynamic> getRecordData() async{
   var x = await api.getRecords();
   var y = json.decode(x.body);
   int len = y.length;
+  int p = 0;
   for (var i = 0; i < len; i++) {
     var rcds = y[i];
+    if (rcds["status"] == true)
+      p+=1;
     records.add(
       new RecordData(rcds),
     );
   }
+  pendingTasks[0].setCount(p);
+  pendingTasks[1].setCount(len-p);
+  
   return x;
 }
 
@@ -114,7 +136,7 @@ class RecordData {
     else{
       this.status = false;
     }
-    this.sno = records["sno"];
+    this.sno = records["s_no"];
     this.wid_s = records["wid_s"];
     this.wid_c = records["wid_c"];
     this.dos = records["dos"];

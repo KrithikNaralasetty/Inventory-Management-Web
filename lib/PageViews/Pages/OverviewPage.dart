@@ -19,7 +19,6 @@ class Overview extends StatefulWidget {
 }
 
 class _OverviewState extends State<Overview> {
-
   double h, w;
   int tasks = data.records.length;
   // ignore: non_constant_identifier_names
@@ -34,11 +33,12 @@ class _OverviewState extends State<Overview> {
   List<Widget> get_pend_tasks() {
     List<Widget> pt = [];
     var tasks = data.records;
-    
+    int len = tasks.length;
+
     for (var i = 0; i < tasks.length; i++) {
-    var works = tasks[i].status;
-    var dates = tasks[i].dos;
-    var desc = tasks[i].uid;
+      var works = tasks[i].status;
+      var dates = tasks[i].dos;
+      var desc = tasks[i].uid;
       pt.add(Container(
         padding: EdgeInsets.all(10.0),
         child: ListTile(
@@ -62,7 +62,49 @@ class _OverviewState extends State<Overview> {
         ),
       ));
     }
-    return pt;
+
+    List<Widget> pend_task = [
+      Expanded(
+        child: Row(
+          children: [
+            Expanded(
+              child: Container(
+                color: primary,
+              ),
+            ),
+            Expanded(
+              flex: 4,
+              child: Center(
+                child: Text(
+                  "Pending Tasks: $len",
+                  style: textSt,
+                ),
+              ),
+            ),
+            Expanded(
+              child: IconButton(
+                onPressed: () {
+                  pageLocator<PageNavigationService>().goBack();
+                  pageLocator<PageNavigationService>()
+                      .navigateTo(tasksPageRoute);
+                },
+                icon: Icon(
+                  Icons.menu,
+                  color: iconColor,
+                ),
+              ),
+            ),
+          ],
+        ),
+      ),
+      Expanded(
+          flex: 9,
+          child: ListView(
+            children: pt,
+          ))
+    ];
+
+    return pend_task;
   }
 
   List<Widget> get_equipments() {
@@ -79,8 +121,8 @@ class _OverviewState extends State<Overview> {
       ),
     ];
     List eqs = [];
-    for (var i=0; i <mcns.length;i++){
-      if (eqs.contains(mcns[i].eqtype) == false){
+    for (var i = 0; i < mcns.length; i++) {
+      if (eqs.contains(mcns[i].eqtype) == false) {
         eqs.add(mcns[i].eqtype);
       }
     }
@@ -124,9 +166,7 @@ class _OverviewState extends State<Overview> {
     for (var i = 0; i < len; i++) {
       srvices.add(
         ListTile(
-          title: Text(srvs[i].sno.toString() +
-              " " +
-              srvs[i].wid_s.toString()),
+          title: Text(srvs[i].sno.toString() + " " + srvs[i].wid_s.toString()),
           subtitle: Text(srvs[i].dos.toString()),
           leading: Icon(
             Icons.arrow_right_alt,
@@ -158,7 +198,8 @@ class _OverviewState extends State<Overview> {
               child: IconButton(
                   onPressed: () {
                     pageLocator<PageNavigationService>().goBack();
-                    pageLocator<PageNavigationService>().navigateTo(machinePageRoute);
+                    pageLocator<PageNavigationService>()
+                        .navigateTo(machinePageRoute);
                   },
                   icon: Icon(
                     Icons.menu,
@@ -206,7 +247,8 @@ class _OverviewState extends State<Overview> {
               icon: Icon(Icons.menu, color: iconColor),
               onPressed: () {
                 pageLocator<PageNavigationService>().goBack();
-                pageLocator<PageNavigationService>().navigateTo(templatesPageRoute);
+                pageLocator<PageNavigationService>()
+                    .navigateTo(templatesPageRoute);
               },
             ),
           )
@@ -329,130 +371,53 @@ class _OverviewState extends State<Overview> {
               child: Card(
                 elevation: 20.0,
                 color: cd.primary,
-                child: FutureBuilder(
-                  future: data.getRecordData(),
-                  builder: (BuildContext context, AsyncSnapshot<dynamic> snapshot){
-                  if (snapshot.hasData){
-                    return Expanded(
-                  child: Column(
-                    children: [
-                      Expanded(
-                        child: Row(
-                          children: [
-                            Expanded(
-                              child: Container(
-                                color: primary,
-                              ),
-                            ),
-                            Expanded(
-                              flex: 4,
-                              child: Center(
-                                child: Text(
-                                  "Pending Tasks: $tasks",
-                                  style: textSt,
-                                ),
-                              ),
-                            ),
-                            Expanded(
-                                child: IconButton(
-                                    onPressed: () {
-                                      pageLocator<PageNavigationService>().goBack();
-                                      pageLocator<PageNavigationService>()
-                                          .navigateTo(tasksPageRoute);
-                                    },
-                                    icon: Icon(
-                                      Icons.menu,
-                                      color: iconColor,
-                                    )))
-                          ],
-                        ),
+                child: Column(
+                  children: [
+                    Expanded(
+                      child: Column(
+                        children: get_pend_tasks(),
                       ),
-                      Expanded(
-                        flex: 9,
-                        child: ListView(
-                          children: get_pend_tasks(),
-                        ),
-                      ),
-                    ],
-                  ),
-                );
-                  }
-                  else{
-                    return Center(child: CircularProgressIndicator(),);
-                  }
-                })
+                    ),
+                  ],
+                ),
               ),
             ),
             //Types of Equipments
             Container(
               child: Card(
-                elevation: 20.0,
-                color: cd.primary,
-                child: FutureBuilder(future: data.getMachineData(),
-                builder: (BuildContext context, AsyncSnapshot<dynamic> snapshot){
-                  if (snapshot.hasData){
-                    return ListView(
-                  children: get_equipments(),
-                );
-                  }
-                  else{
-                    return Center(child: CircularProgressIndicator(),);
-                  }
-                },),
-              ),
+                  elevation: 20.0,
+                  color: cd.primary,
+                  child: ListView(
+                    children: get_equipments(),
+                  )),
             ),
             //Recent Machines under Service
             Container(
               child: Card(
-                elevation: 20.0,
-                color: cd.primary,
-                child: FutureBuilder(
-                future: data.getRecordData(),
-                builder: (BuildContext context, AsyncSnapshot<dynamic> snapshot){
-                  if (snapshot.hasData){
-                    return ListView(
-                  children: get_recent_services(),
-                );
-                  }
-                  else{
-                    return Center(child: CircularProgressIndicator());
-                  }
-                }),
-              ),
+                  elevation: 20.0,
+                  color: cd.primary,
+                  child: ListView(
+                    children: get_recent_services(),
+                  )),
             ),
             //List of Machines
             Container(
               child: Card(
                 elevation: 20.0,
                 color: cd.primary,
-                child: FutureBuilder(future: data.getMachineData(),builder: (BuildContext context, AsyncSnapshot<dynamic> snapshot){
-                  if (snapshot.hasData){
-                    return ListView(
+                child: ListView(
                   children: get_machines_list(),
-                );
-                  }
-                  else{
-                    return Center(child: CircularProgressIndicator(),);
-                  }
-                })
+                ),
               ),
             ),
             //Templates Lists
             Container(
               child: Card(
-                elevation: 20.0,
-                color: cd.primary,
-                child: FutureBuilder(future: data.getTemplateData(),builder: (BuildContext context, AsyncSnapshot<dynamic> snapshot){
-                  if (snapshot.hasData){
-                    return ListView(
-                  children: get_templates_list(),
-                );
-                  }
-                  else{
-                    return Center(child: CircularProgressIndicator(),);
-                  }
-                })
-              ),
+                  elevation: 20.0,
+                  color: cd.primary,
+                  child: ListView(
+                    children: get_templates_list(),
+                  )),
             ),
             //List of Workers
             // Container(

@@ -7,7 +7,8 @@ import 'package:flutter/rendering.dart';
 // ignore: unused_import
 import 'package:inventory_management_web/Screens/LoginPage.dart';
 import 'package:inventory_management_web/Screens/MainPage.dart';
-import 'Data/TablesData.dart';
+import 'package:inventory_management_web/Data/ColorData.dart' as cd;
+import 'package:inventory_management_web/Data/APIs.dart';
 import 'PageViews/LocatorTool.dart';
 
 void main() {
@@ -43,6 +44,30 @@ class _MyHomePageState extends State<MyHomePage> {
 
   @override
   Widget build(BuildContext context) {
-    return MainPage("Alpha");
+    return FutureBuilder(
+        future: api.getData(),
+        builder: (BuildContext context, AsyncSnapshot<dynamic> snapshot) {
+          if (snapshot.hasData) {
+            return LoginPage();
+          } else {
+            return Center(
+              child: Row(
+                children: [
+                  Expanded(
+                    child: Center(
+                        child: Text(
+                      "Getting Data, please wait: ",
+                      style: cd.textSt,
+                    )),
+                  ),
+                  Expanded(
+                    child: Center(
+                        child: CircularProgressIndicator(color: cd.second)),
+                  ),
+                ],
+              ),
+            );
+          }
+        });
   }
 }

@@ -1,6 +1,7 @@
 // APIs for the Admin Application to communicate with the database
 import 'dart:async';
 import 'package:http/http.dart' as http;
+import 'package:inventory_management_web/Data/TablesData.dart' as data;
 
 const String mainURL = "https://formfield.azurewebsites.net/";
 final DataApi api = DataApi(mainURL);
@@ -20,6 +21,19 @@ class DataApi {
   }
   String getApi(String function){
     return this.functions[function];
+  }
+
+  Future<dynamic> getData() async{
+  // ignore: unused_local_variable
+  var x;
+  bool flag = true;
+  x = await data.getMachineData();
+  x = await data.getRecordData();
+  x = await data.getTemplateData();
+  //x = await this.getWorkers();
+  // if (x.data != null)
+  //   flag = false;
+  return flag;
   }
 
   Future<dynamic> getTemplates() async {

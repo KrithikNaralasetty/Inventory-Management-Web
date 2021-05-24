@@ -1,9 +1,8 @@
 import 'package:flutter/material.dart';
-import 'dart:convert';
-import 'package:flutter/material.dart';
-import 'package:http/http.dart' as http;
 import 'package:inventory_management_web/Data/APIs.dart';
-import 'package:inventory_management_web/Screens/LoginPage.dart';
+import 'package:qr_flutter/qr_flutter.dart';
+import 'package:inventory_management_web/Data/TablesData.dart' as data;
+import 'dart:convert';
 
 class AddMachinesPage extends StatefulWidget {
   AddMachinesPage({Key key}) : super(key: key);
@@ -29,72 +28,73 @@ class MachinePage extends StatefulWidget {
 }
 
 class MachinePageState extends State<MachinePage> {
+  var _templates = data.templates, _username, _password;
   var day = DateTime.now();
   var time = TimeOfDay.now();
   var timeNow = TimeOfDay.now();
   var dayNow = DateTime.now();
+  var responsee;
+
   bool checkFlag = false;
   String equipmentType, modelNumber, brandName, serialNumber;
   bool equip = false;
   bool model = false;
   bool brand = false;
   bool serial = false;
-  String dropdownvalue;
-  Map<String, String> details = Map();
-  List<DropdownMenuItem> templates = [];
+  String dropDownValue;
+  Map<String, String> recordDetails = Map();
+  List<DropdownMenuItem> templateDropDownItems = [];
   // ignore: unused_field
-  var _templates, _response, _username, _password;
 
   var containerDecor = BoxDecoration(
-      color: Colors.white,
-      borderRadius: BorderRadius.circular(20.0),
-      shape: BoxShape.rectangle,
-      boxShadow: [
-        BoxShadow(
-            offset: Offset(0.0, 0.6), color: Colors.grey, blurRadius: 25.0),
-      ]);
-  var responsee;
+    color: Colors.white,
+    borderRadius: BorderRadius.circular(20.0),
+    shape: BoxShape.rectangle,
+    boxShadow: [
+      BoxShadow(offset: Offset(0.0, 0.6), color: Colors.grey, blurRadius: 25.0),
+    ],
+  );
+
   void initState() {
-    api.getTemplates();
-    templates.add(
-      DropdownMenuItem(
-        child: Text("Add New Template"),
-        value: "Add New Template",
-      ),
-    );
+    this.templateDropDownItems.add(
+          DropdownMenuItem(
+            child: Text("Add New Template"),
+            value: "Add New Template",
+          ),
+        );
     super.initState();
   }
 
   MachinePageState(this._username, this._password);
 
   void setData() {
-    if (equip && model && brand && serial && (dropdownvalue != null)) {
-      details["eqtype"] = equipmentType;
-      details["brand"] = brandName;
-      details["model"] = modelNumber;
-      details["serialno"] = serialNumber;
-      details["doi"] = "" +
-          day.year.toString() +
-          "-" +
-          day.month.toString() +
-          "-" +
-          day.day.toString();
-      details["uid"] = "";
-      details["tname"] = dropdownvalue;
+    if (this.equip &&
+        this.model &&
+        this.brand &&
+        this.serial &&
+        (this.dropDownValue != null)) {
+      this.recordDetails["eqtype"] = this.equipmentType;
+      this.recordDetails["brand"] = this.brandName;
+      this.recordDetails["model"] = this.modelNumber;
+      this.recordDetails["serialno"] = this.serialNumber;
+      this.recordDetails["doi"] = this.day.toString().substring(0,10);
+      this.recordDetails["tname"] = this.dropDownValue;
+      this.recordDetails["uid"] = "";
+      
     }
   }
 
   Future<Null> _selectDate(BuildContext context) async {
     final DateTime picked = await showDatePicker(
-      initialDate: day,
+      initialDate: this.day,
       firstDate: DateTime(1960),
       context: context,
       lastDate: DateTime(2100),
     );
 
-    if (picked != null && picked != day) {
+    if (picked != null) {
       setState(() {
-        day = picked;
+        this.day = picked;
       });
     }
   }
@@ -102,14 +102,39 @@ class MachinePageState extends State<MachinePage> {
   Future<Null> _selectTime(BuildContext context) async {
     final TimeOfDay picked = await showTimePicker(
       context: context,
-      initialTime: time,
+      initialTime: this.time,
     );
 
-    if (picked != null && picked != time) {
+    if (picked != null) {
       setState(() {
-        time = picked;
+        this.time = picked;
       });
     }
+  }
+
+  Widget getDropDownList() {
+    int i;
+    var temps = this._templates;
+    if (!this.checkFlag) {
+      for (i = 0; i < temps.length; i++) {
+        this.templateDropDownItems.add(DropdownMenuItem(
+              child: Text(temps[i].tname.toString()),
+              value: temps[i].tname,
+            ));
+      }
+      this.checkFlag = true;
+    }
+
+    return DropdownButton(
+      items: this.templateDropDownItems,
+      hint: Text("Select an Option"),
+      onChanged: (_value) {
+        setState(() {
+          this.dropDownValue = _value;
+        });
+      },
+      value: this.dropDownValue,
+    );
   }
 
   @override
@@ -129,13 +154,14 @@ class MachinePageState extends State<MachinePage> {
       body: ListView(
         scrollDirection: Axis.vertical,
         children: <Widget>[
-          Container(
+          SizedBox(
             height: 20.0,
           ),
+          //Text Field for Equipment Type
           Padding(
             padding: EdgeInsets.all(10.0),
             child: Container(
-              decoration: containerDecor,
+              decoration: this.containerDecor,
               padding: EdgeInsets.all(20.0),
               child: Column(
                 children: <Widget>[
@@ -143,10 +169,14 @@ class MachinePageState extends State<MachinePage> {
                     child: Text("Enter Equipment Type"),
                   ),
                   TextField(
-                    onChanged: (equpment) {
+                    onChanged: (value) {
                       setState(() {
-                        equipmentType = equpment;
-                        equip = true;
+                        if (value != null) {
+                          this.equipmentType = value;
+                        } else {
+                          this.equipmentType = "default";
+                        }
+                        this.equip = true;
                       });
                     },
                     decoration: InputDecoration(labelText: "Enter Equipment"),
@@ -155,11 +185,12 @@ class MachinePageState extends State<MachinePage> {
               ),
             ),
           ),
+          //Text Field for Model
           Padding(
             padding: EdgeInsets.all(10.0),
             child: Container(
               padding: EdgeInsets.all(20.0),
-              decoration: containerDecor,
+              decoration: this.containerDecor,
               child: Column(
                 children: <Widget>[
                   Container(
@@ -169,9 +200,12 @@ class MachinePageState extends State<MachinePage> {
                     ),
                   ),
                   TextField(
-                    onChanged: (_model) {
-                      modelNumber = _model;
-                      model = true;
+                    onChanged: (value) {
+                      this.modelNumber = value;
+                      if (value == null)
+                        this.model = false;
+                      else
+                        this.model = true;
                     },
                     decoration: InputDecoration(labelText: "Enter Model Name"),
                   )
@@ -179,11 +213,12 @@ class MachinePageState extends State<MachinePage> {
               ),
             ),
           ),
+          //Text Field for Brand
           Padding(
             padding: EdgeInsets.all(10.0),
             child: Container(
               padding: EdgeInsets.all(20.0),
-              decoration: containerDecor,
+              decoration: this.containerDecor,
               child: Column(
                 children: <Widget>[
                   Container(
@@ -193,9 +228,12 @@ class MachinePageState extends State<MachinePage> {
                     ),
                   ),
                   TextField(
-                    onChanged: (_brand) {
-                      brandName = _brand;
-                      brand = true;
+                    onChanged: (value) {
+                      this.brandName = value;
+                      if (value != null)
+                        this.brand = true;
+                      else
+                        this.brand = false;
                     },
                     decoration: InputDecoration(labelText: "Enter Brand"),
                   )
@@ -203,11 +241,12 @@ class MachinePageState extends State<MachinePage> {
               ),
             ),
           ),
+          //Text Field for Serial number
           Padding(
             padding: EdgeInsets.all(10.0),
             child: Container(
               padding: EdgeInsets.all(20.0),
-              decoration: containerDecor,
+              decoration: this.containerDecor,
               child: Column(
                 children: <Widget>[
                   Container(
@@ -217,9 +256,12 @@ class MachinePageState extends State<MachinePage> {
                     ),
                   ),
                   TextField(
-                    onChanged: (serialNo) {
-                      serialNumber = serialNo;
-                      serial = true;
+                    onChanged: (value) {
+                      this.serialNumber = value;
+                      if (value != null)
+                        this.serial = true;
+                      else
+                        this.serial = false;
                     },
                     decoration:
                         InputDecoration(labelText: "Enter Serial Number"),
@@ -228,11 +270,12 @@ class MachinePageState extends State<MachinePage> {
               ),
             ),
           ),
+          //Date Pickers Row
           Padding(
             padding: EdgeInsets.all(10.0),
             child: Container(
               padding: EdgeInsets.all(20.0),
-              decoration: containerDecor,
+              decoration: this.containerDecor,
               child: Column(
                 children: <Widget>[
                   Container(
@@ -256,7 +299,7 @@ class MachinePageState extends State<MachinePage> {
                               style: TextStyle(color: Colors.white),
                             ),
                             onPressed: () {
-                              _selectDate(context);
+                              this._selectDate(context);
                             },
                           ),
                         ),
@@ -274,7 +317,7 @@ class MachinePageState extends State<MachinePage> {
                               style: TextStyle(color: Colors.white),
                             ),
                             onPressed: () {
-                              _selectTime(context);
+                              this._selectTime(context);
                             },
                           ),
                         ),
@@ -285,11 +328,12 @@ class MachinePageState extends State<MachinePage> {
               ),
             ),
           ),
+          //Selecting template from a Drop Down List of template
           Padding(
             padding: EdgeInsets.all(10.0),
             child: Container(
               height: 100.0,
-              decoration: containerDecor,
+              decoration: this.containerDecor,
               child: Row(
                 children: <Widget>[
                   Expanded(
@@ -304,39 +348,8 @@ class MachinePageState extends State<MachinePage> {
                   Expanded(
                     flex: 1,
                     child: Center(
-                        child: FutureBuilder(
-                      future: api.getTemplates(),
-                      builder: (context, snapshot) {
-                        if (snapshot.hasData) {
-                          int i;
-                          _templates = json.decode(snapshot.data.body);
-                          print(_templates);
-
-                          var temps = _templates;
-                          if (!checkFlag) {
-                            for (i = 0; i < temps.length; i++) {
-                              templates.add(DropdownMenuItem(
-                                child: Text(temps[i]["tname"].toString()),
-                                value: temps[i]["tname"],
-                              ));
-                            }
-                            checkFlag = true;
-                          }
-                          return DropdownButton(
-                            items: templates,
-                            hint: Text("Select an Option"),
-                            onChanged: (_value) {
-                              setState(() {
-                                dropdownvalue = _value;
-                              });
-                            },
-                            value: dropdownvalue,
-                          );
-                        } else {
-                          return CircularProgressIndicator();
-                        }
-                      },
-                    )),
+                      child: this.getDropDownList(),
+                    ),
                   )
                 ],
               ),
@@ -347,14 +360,49 @@ class MachinePageState extends State<MachinePage> {
       floatingActionButton: FloatingActionButton(
         child: Icon(Icons.save),
         backgroundColor: Color(0xFF00003f),
-        onPressed: () {
+        onPressed: () async {
           setState(() {
             setData();
-            api.putMachine(details);
           });
+          var record = json.encode(recordDetails);
+          return showDialog(
+              context: context,
+              builder: (BuildContext context) {
+                return AlertDialog(
+                  title: Text("QR Code"),
+                  content: FutureBuilder(
+                    future: api.putMachine(record),
+                    builder: (BuildContext context,
+                        AsyncSnapshot<dynamic> snapshot) {
+                      if (snapshot.hasData) {
+                        var h = MediaQuery.of(context).size.height *0.3;
+                        var w = MediaQuery.of(context).size.height *0.4;
+                        var qrData = snapshot.data.body;
+                        var qrCode = json.decode(qrData)["uid"]; 
+                        return Container(
+                          height: h,
+                          width:w,
+                          child: QrImage(data: qrCode),
+                        );
+                      } else {
+                        return CircularProgressIndicator();
+                      }
+                    },
+                  ),
+                  actions: [
+                    TextButton(
+                      child: Text("Close"),
+                      onPressed: () {
+                        Navigator.pop(context);
+                      },
+                    ),
+                  ],
+                );
+              });
         },
       ),
     );
+
     return _page;
   }
 }

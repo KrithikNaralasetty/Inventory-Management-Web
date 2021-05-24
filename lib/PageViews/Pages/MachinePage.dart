@@ -1,6 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:inventory_management_web/Data/ColorData.dart';
 import 'package:inventory_management_web/Data/TablesData.dart' as data;
+import 'package:inventory_management_web/PageViews/LocatorTool.dart';
+import 'package:inventory_management_web/PageViews/NavigationServiceTool.dart';
 import 'package:inventory_management_web/PageViews/Pages/AddMachinePage.dart';
 
 class MachinesPage extends StatefulWidget {
@@ -10,12 +12,12 @@ class MachinesPage extends StatefulWidget {
 
 class _MachinesPageState extends State<MachinesPage> {
   var mechs = data.machines;
-  
+
   List<Widget> get_list_machines() {
     List<Widget> mcs = [];
     var m = data.machines;
     int len = m.length;
-    for (var i = 0; i <len; i++) {
+    for (var i = 0; i < len; i++) {
       mcs.add(
         ListTile(
           leading: Icon(
@@ -79,17 +81,41 @@ class _MachinesPageState extends State<MachinesPage> {
     Widget mc_list = Column(
       children: [
         Expanded(
-          child: Center(
-            child: Text(
-              "List of Machines",
-              style: TextStyle(
-                color: primary,
-                fontFamily: "FiraSans",
-                fontStyle: FontStyle.normal,
-                fontWeight: FontWeight.w400,
-                fontSize: 32,
+          child: Row(
+            children: [
+              Expanded(
+                  child: IconButton(
+                icon: Icon(
+                  Icons.arrow_back_outlined,
+                  color: Colors.black,
+                ),
+                onPressed: () {
+                  pageLocator<PageNavigationService>().goBack();
+                  pageLocator<PageNavigationService>()
+                      .navigateTo(overviewPageRoute);
+                },
+              )),
+              Expanded(
+                flex: 8,
+                child: Center(
+                  child: Text(
+                    "List of Machines",
+                    style: TextStyle(
+                      color: primary,
+                      fontFamily: "FiraSans",
+                      fontStyle: FontStyle.normal,
+                      fontWeight: FontWeight.w400,
+                      fontSize: 32,
+                    ),
+                  ),
+                ),
               ),
-            ),
+              Expanded(
+                  child: Icon(
+                Icons.replay_outlined,
+                color: Colors.black,
+              ))
+            ],
           ),
         ),
         Expanded(
@@ -101,10 +127,12 @@ class _MachinesPageState extends State<MachinesPage> {
       ],
     );
     return SafeArea(
-      child: Row(children: [
-        Expanded(child: mc_list),
-        Expanded(child: MachinePage("Form Field Admin", "12345678")),
-      ],),
+      child: Row(
+        children: [
+          Expanded(child: mc_list),
+          Expanded(child: MachinePage("Alpha", "123456789")),
+        ],
+      ),
     );
   }
 }

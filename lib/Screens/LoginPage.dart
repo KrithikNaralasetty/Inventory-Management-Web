@@ -4,7 +4,7 @@ import 'dart:html' as html;
 import 'package:flutter/material.dart';
 import 'package:flutter/rendering.dart';
 import 'package:inventory_management_web/Data/ColorData.dart';
-import 'package:inventory_management_web/Data/mechs.dart';
+import 'package:inventory_management_web/Data/TablesData.dart' as data;
 import 'MainPage.dart';
 
 class LoginPage extends StatefulWidget {
@@ -16,7 +16,7 @@ class LoginPage extends StatefulWidget {
 class _LoginPageState extends State<LoginPage> {
   double height, width;
   String _title = "Form Field";
-  var users = admins;
+  var users = data.admins;
   String _username, _password;
   // ignore: unused_field
   bool _usernameVal;
@@ -47,12 +47,12 @@ class _LoginPageState extends State<LoginPage> {
           style: TextStyle(
             color: textColor,
             fontFamily: "FiraSans",
-            fontStyle: FontStyle.italic,
+            fontStyle: FontStyle.normal,
             fontWeight: FontWeight.w400,
             fontSize: height * 0.05,
           ),
         ),
-        backgroundColor: primary,
+        backgroundColor: Colors.transparent,
       ),
       body: Row(children: [
         //App Download Link Side
@@ -87,7 +87,7 @@ class _LoginPageState extends State<LoginPage> {
                           "Newly joined Worker/Inspector?",
                           textAlign: TextAlign.center,
                           style: TextStyle(
-                            fontStyle: FontStyle.italic,
+                            fontStyle: FontStyle.normal,
                             fontWeight: FontWeight.w400,
                             fontFamily: "FiraSans",
                             color: textColor,
@@ -102,8 +102,8 @@ class _LoginPageState extends State<LoginPage> {
                         "Please click on the icons below to download the respective application files as per your choice of OS",
                         textAlign: TextAlign.center,
                         style: TextStyle(
-                          fontStyle: FontStyle.italic,
-                          fontWeight: FontWeight.w200,
+                          fontStyle: FontStyle.normal,
+                          fontWeight: FontWeight.w400,
                           fontFamily: "FiraSans",
                           color: textColor,
                           fontSize: height * 0.04,
@@ -168,39 +168,11 @@ class _LoginPageState extends State<LoginPage> {
                         child: Text(
                           "Already an Existing Admin?",
                           style: TextStyle(
-                            fontStyle: FontStyle.italic,
+                            fontStyle: FontStyle.normal,
                             fontWeight: FontWeight.w400,
                             fontFamily: "FiraSans",
                             color: textColor,
                             fontSize: height * 0.06,
-                          ),
-                        ),
-                      ),
-                      //Text (Lorem Ipsum)
-                      Expanded(
-                        flex: 1,
-                        child: Text(
-                          "Lorem Ipsum De Facto",
-                          style: TextStyle(
-                            fontStyle: FontStyle.italic,
-                            fontWeight: FontWeight.w200,
-                            fontFamily: "FiraSans",
-                            color: textColor,
-                            fontSize: height * 0.04,
-                          ),
-                        ),
-                      ),
-                      // Text (Lorem Ipsum)
-                      Expanded(
-                        flex: 1,
-                        child: Text(
-                          "Lorem Ipsum De Facto ",
-                          style: TextStyle(
-                            fontStyle: FontStyle.italic,
-                            fontWeight: FontWeight.w200,
-                            fontFamily: "FiraSans",
-                            color: textColor,
-                            fontSize: height * 0.04,
                           ),
                         ),
                       ),
@@ -228,8 +200,8 @@ class _LoginPageState extends State<LoginPage> {
                               child: Text(
                                 "Admin Login",
                                 style: TextStyle(
-                                  fontStyle: FontStyle.italic,
-                                  fontWeight: FontWeight.w200,
+                                  fontStyle: FontStyle.normal,
+                                  fontWeight: FontWeight.w400,
                                   color: textColor,
                                   fontFamily: "FiraSans",
                                   fontSize: 30.0,
@@ -243,8 +215,8 @@ class _LoginPageState extends State<LoginPage> {
                                 cursorColor: Colors.black,
                                 decoration: InputDecoration(
                                   hintStyle: TextStyle(
-                                      fontStyle: FontStyle.italic,
-                                      fontWeight: FontWeight.w200,
+                                      fontStyle: FontStyle.normal,
+                                      fontWeight: FontWeight.w400,
                                       color: textColor,
                                       fontFamily: "FiraSans"),
                                   hintText: "Enter Username",
@@ -270,8 +242,8 @@ class _LoginPageState extends State<LoginPage> {
                                 obscuringCharacter: '*',
                                 decoration: InputDecoration(
                                   hintStyle: TextStyle(
-                                    fontStyle: FontStyle.italic,
-                                    fontWeight: FontWeight.w200,
+                                    fontStyle: FontStyle.normal,
+                                    fontWeight: FontWeight.w400,
                                     color: textColor,
                                     fontFamily: "FiraSans",
                                   ),
@@ -299,8 +271,8 @@ class _LoginPageState extends State<LoginPage> {
                           child: Text(
                             "Login",
                             style: TextStyle(
-                              fontStyle: FontStyle.italic,
-                              fontWeight: FontWeight.w200,
+                              fontStyle: FontStyle.normal,
+                              fontWeight: FontWeight.w400,
                               color: textColor,
                               fontSize: 26.0,
                               fontFamily: "FiraSans",
@@ -317,33 +289,37 @@ class _LoginPageState extends State<LoginPage> {
                               if (users["uname"][i] == _username) {
                                 _usernameVal = true;
                                 _usernameIndex = i;
-                                debugPrint(_username);
-                                debugPrint("$_usernameIndex");
-                                debugPrint("$_usernameVal");
                                 break;
                               }
                             }
                             if (_usernameVal == true) {
                               var x = users["psswd"][_usernameIndex];
                               debugPrint("$x");
-                              if ( "$x"== _password) {
+                              if ("$x" == _password) {
                                 Navigator.push(context,
                                     MaterialPageRoute(builder: (context) {
                                   return MainPage(_username);
                                 }));
                               }
-                            }
-                            else{
-                              showDialog(context: context, builder: (BuildContext context){
-                                return AlertDialog(
-                                  content: Text("Hello there"),
-                                  actions: [
-                                    TextButton(child: Text("Close"),onPressed: (){
-                                      Navigator.pop(context);
-                                    },),
-                                  ],
-                                );
-                              },);
+                            } else {
+                              showDialog(
+                                context: context,
+                                builder: (BuildContext context) {
+                                  return AlertDialog(
+                                    title: Text("Error in Credentials"),
+                                    content: Text(
+                                        "Entered Wrong Password/Username or both. Please Enter the correct Values"),
+                                    actions: [
+                                      TextButton(
+                                        child: Text("Close"),
+                                        onPressed: () {
+                                          Navigator.pop(context);
+                                        },
+                                      ),
+                                    ],
+                                  );
+                                },
+                              );
                             }
                           },
                         ))
@@ -366,8 +342,8 @@ class _LoginPageState extends State<LoginPage> {
                                 style: TextStyle(
                                     fontFamily: "FiraSans",
                                     fontSize: 20.0,
-                                    fontStyle: FontStyle.italic,
-                                    fontWeight: FontWeight.w200,
+                                    fontStyle: FontStyle.normal,
+                                    fontWeight: FontWeight.w400,
                                     color: textColor),
                               ),
                             ),
@@ -412,8 +388,8 @@ class _LoginPageState extends State<LoginPage> {
                     title: Text(
                       "Want to know more about the application? or have issues to report?\nMessage us on our project board",
                       style: TextStyle(
-                        fontStyle: FontStyle.italic,
-                        fontWeight: FontWeight.w200,
+                        fontStyle: FontStyle.normal,
+                        fontWeight: FontWeight.w400,
                         color: textColor,
                         fontSize: 20.0,
                         fontFamily: "FiraSans",
@@ -422,7 +398,9 @@ class _LoginPageState extends State<LoginPage> {
                     actions: [
                       IconButton(
                         onPressed: () {
-                          html.window.open("https://github.com/KrithikNaralasetty/Inventory-Management-Web/issues", "Issues/Review");
+                          html.window.open(
+                              "https://github.com/KrithikNaralasetty/Inventory-Management-Web/issues",
+                              "Issues/Review");
                         },
                         icon: Icon(
                           Icons.open_in_browser_rounded,
