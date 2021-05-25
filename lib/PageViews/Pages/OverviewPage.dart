@@ -1,6 +1,8 @@
 import 'dart:developer';
 import 'package:flutter/gestures.dart';
 import 'package:flutter/material.dart';
+import 'dart:convert';
+import 'package:inventory_management_web/Data/APIs.dart';
 import 'package:inventory_management_web/Data/ColorData.dart';
 import 'package:inventory_management_web/PageViews/LocatorTool.dart';
 import 'package:inventory_management_web/PageViews/NavigationServiceTool.dart';
@@ -21,6 +23,7 @@ class Overview extends StatefulWidget {
 class _OverviewState extends State<Overview> {
   double h, w;
   int tasks = data.records.length;
+  String wname = "";
   // ignore: non_constant_identifier_names
 
   Color getWorking(bool value) {
@@ -336,13 +339,57 @@ class _OverviewState extends State<Overview> {
     Widget worker_card = Column(
       children: [
         Expanded(
-          child: Center(
-            child: Text(
-              "Workers List",
-              style: textSt,
+            child: Row(
+          children: [
+            Expanded(
+              child: Container(),
             ),
-          ),
-        ),
+            Expanded(
+              flex: 8,
+              child: Center(
+                child: Text(
+                  "Workers List",
+                  style: textSt,
+                ),
+              ),
+            ),
+            Expanded(
+                child: IconButton(
+              onPressed: () {
+                return showDialog(
+                  context: context,
+                  builder: (BuildContext context) {
+                    return AlertDialog(
+                      title: Text("Add New Worker:"),
+                      content: TextField(
+                        decoration: InputDecoration(hintText: "Worker Name"),
+                        onChanged: (value) {
+                          setState(() {
+                            this.wname = value;
+                          });
+                        },
+                      ),
+                      actions: [
+                        TextButton(onPressed: () async{
+                          var y = new data.WorkerData({
+                            "wid": 3,
+                            "wpic": "https://i.ibb.co/GnqT0NV/Whats-App-Image-2021-03-26-at-1-11-23-PM.jpg",
+                            "wname": this.wname.toString(),
+                          });
+                          var x = api.putWorker(json.encode(y));
+                          debugPrint(x.toString());
+                          Navigator.pop(context);
+                        }, child: Text("Add")),
+                      ],
+                    );
+                  },
+                );
+              },
+              color: cd.iconColor,
+              icon: Icon(Icons.add_circle_outline),
+            ))
+          ],
+        )),
         Expanded(
           child: ListView(
             children: worker_list,
@@ -420,22 +467,13 @@ class _OverviewState extends State<Overview> {
                   )),
             ),
             //List of Workers
-            // Container(
-            //   child: Card(
-            //     elevation: 20.0,
-            //     color: cd.primary,
-            //     child: FutureBuilder(
-            //       future: data.getWorkerData(),
-            //       builder: (BuildContext context,AsyncSnapshot<dynamic> snapshot){
-            //       if (snapshot.hasData){
-            //         return get_workers_list();
-            //       }
-            //       else{
-            //         return Center(child: CircularProgressIndicator(),);
-            //       }
-            //     }),
-            //   ),
-            // ),
+            Container(
+              child: Card(
+                elevation: 20.0,
+                color: cd.primary,
+                child: get_workers_list(),
+              ),
+            ),
           ],
         ),
       ),

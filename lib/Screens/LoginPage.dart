@@ -3,6 +3,7 @@ import 'dart:ui';
 import 'dart:html' as html;
 import 'package:flutter/material.dart';
 import 'package:flutter/rendering.dart';
+import 'package:inventory_management_web/Data/APIs.dart';
 import 'package:inventory_management_web/Data/ColorData.dart';
 import 'package:inventory_management_web/Data/TablesData.dart' as data;
 import 'MainPage.dart';
@@ -266,63 +267,77 @@ class _LoginPageState extends State<LoginPage> {
                     ),
                     //Login Button
                     Expanded(
-                        flex: 1,
-                        child: TextButton(
-                          child: Text(
-                            "Login",
-                            style: TextStyle(
-                              fontStyle: FontStyle.normal,
-                              fontWeight: FontWeight.w400,
-                              color: textColor,
-                              fontSize: 26.0,
-                              fontFamily: "FiraSans",
-                            ),
-                          ),
-                          style: ButtonStyle(
-                              backgroundColor:
-                                  MaterialStateProperty.resolveWith(
-                                      (states) => this.getColor(states))),
-                          onPressed: () {
-                            _usernameVal = false;
-                            int n = users["uname"].length;
-                            for (var i = 0; i < n; i++) {
-                              if (users["uname"][i] == _username) {
-                                _usernameVal = true;
-                                _usernameIndex = i;
-                                break;
-                              }
-                            }
-                            if (_usernameVal == true) {
-                              var x = users["psswd"][_usernameIndex];
-                              debugPrint("$x");
-                              if ("$x" == _password) {
-                                Navigator.push(context,
-                                    MaterialPageRoute(builder: (context) {
-                                  return MainPage(_username);
-                                }));
-                              }
-                            } else {
-                              showDialog(
-                                context: context,
-                                builder: (BuildContext context) {
-                                  return AlertDialog(
-                                    title: Text("Error in Credentials"),
-                                    content: Text(
-                                        "Entered Wrong Password/Username or both. Please Enter the correct Values"),
-                                    actions: [
-                                      TextButton(
-                                        child: Text("Close"),
-                                        onPressed: () {
-                                          Navigator.pop(context);
-                                        },
-                                      ),
-                                    ],
+                      flex: 1,
+                      child: FutureBuilder(
+                        future: api.getData(),
+                        builder: (BuildContext context,
+                            AsyncSnapshot<dynamic> snapshot) {
+                          if (snapshot.hasData) {
+                            return TextButton(
+                              child: Text(
+                                "Login",
+                                style: TextStyle(
+                                  fontStyle: FontStyle.normal,
+                                  fontWeight: FontWeight.w400,
+                                  color: textColor,
+                                  fontSize: 26.0,
+                                  fontFamily: "FiraSans",
+                                ),
+                              ),
+                              style: ButtonStyle(
+                                  backgroundColor:
+                                      MaterialStateProperty.resolveWith(
+                                          (states) => this.getColor(states))),
+                              onPressed: () {
+                                _usernameVal = false;
+                                int n = users["uname"].length;
+                                for (var i = 0; i < n; i++) {
+                                  if (users["uname"][i] == _username) {
+                                    _usernameVal = true;
+                                    _usernameIndex = i;
+                                    break;
+                                  }
+                                }
+                                if (_usernameVal == true) {
+                                  var x = users["psswd"][_usernameIndex];
+                                  debugPrint("$x");
+                                  if ("$x" == _password) {
+                                    Navigator.push(context,
+                                        MaterialPageRoute(builder: (context) {
+                                      return MainPage(_username);
+                                    }));
+                                  }
+                                } else {
+                                  showDialog(
+                                    context: context,
+                                    builder: (BuildContext context) {
+                                      return AlertDialog(
+                                        title: Text("Error in Credentials"),
+                                        content: Text(
+                                            "Entered Wrong Password/Username or both. Please Enter the correct Values"),
+                                        actions: [
+                                          TextButton(
+                                            child: Text("Close"),
+                                            onPressed: () {
+                                              Navigator.pop(context);
+                                            },
+                                          ),
+                                        ],
+                                      );
+                                    },
                                   );
-                                },
-                              );
-                            }
-                          },
-                        ))
+                                }
+                              },
+                            );
+                          } else {
+                            return CircularProgressIndicator(
+                              color: Colors.blue,
+                              strokeWidth: 1.0,
+                            );
+                          }
+                        },
+                      ),
+                    )
                   ],
                 ),
               ),

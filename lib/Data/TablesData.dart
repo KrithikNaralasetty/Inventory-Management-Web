@@ -31,12 +31,13 @@ Future<dynamic> getMachineData() async {
   //Adding List of MachineData Objects
   var x = await api.getMachines();
   var y = json.decode(x.body);
+  List<dynamic> m = [];
   int len = y.length;
   for (var i = 0; i < len; i++) {
     var mcn = y[i];
-    machines.add(new MachineData(mcn));
+    m.add(new MachineData(mcn));
   }
-
+  machines = m;
   return x;
 }
 
@@ -44,13 +45,15 @@ Future<dynamic> getTemplateData() async{
   //Adding List of TemplateData Objects
   var x = await api.getTemplates();
   var y = json.decode(x.body);
+  List<dynamic> t = [];
   int len = y.length;
   for (var i = 0; i < len; i++) {
     var tps = y[i];
-    templates.add(
+    t.add(
       new TemplateData(tps),
     );
   }
+  templates = t;
   return x;
 }
 
@@ -59,15 +62,17 @@ Future<dynamic> getRecordData() async{
   var x = await api.getRecords();
   var y = json.decode(x.body);
   int len = y.length;
+  List<dynamic> r= [];
   int p = 0;
   for (var i = 0; i < len; i++) {
     var rcds = y[i];
     if (rcds["status"] == true)
       p+=1;
-    records.add(
+    r.add(
       new RecordData(rcds),
     );
   }
+  records = r;
   pendingTasks[0].setCount(p);
   pendingTasks[1].setCount(len-p);
   
@@ -78,13 +83,15 @@ Future<dynamic> getWorkerData() async {
   //Adding List of WorkerData Objects
   var x = await api.getWorkers();
   var y = json.decode(x.body);
+  List<dynamic> w = [];
   int len = y.length;
   for (var i=0;i<len;i++){
     var wrks = y[i];
-    workers.add(
+    w.add(
       new WorkerData(wrks),
     );
   }
+  workers = w;
   return x;
 }
 
@@ -107,7 +114,7 @@ class TemplateData {
   String template;
   TemplateData(var tps) {
     this.tname = tps["tname"];
-    this.template = tps["templates"];
+    this.template = tps["template"];
   }
 }
 

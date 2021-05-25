@@ -1,7 +1,7 @@
-// APIs for the Admin Application to communicate with the database
 import 'dart:async';
 import 'package:http/http.dart' as http;
 import 'package:inventory_management_web/Data/TablesData.dart' as data;
+import 'package:flutter/material.dart';
 
 const String mainURL = "https://formfield.azurewebsites.net/";
 final DataApi api = DataApi(mainURL);
@@ -13,8 +13,10 @@ class DataApi {
     this.functions["getTemplate"] = mainURL+"gettemplates";
     this.functions["putTemplate"] = mainURL+"puttemplate";
     this.functions["getMachine"] = mainURL+"getmachines";
+    this.functions["getMachineUid"] = mainURL+"getmachine?uid=";
     this.functions["putMachine"] = mainURL+"putmachine";
-    this.functions["putWorkers"] = mainURL+"getworkers";
+    this.functions["getWorkers"] = mainURL+"/getworkers";
+    this.functions["putWorker"] = mainURL+"putworker";
     this.functions["putRecord"] = mainURL+"putrecord";
     this.functions["getRecord"] = mainURL+"getrecords";
     
@@ -30,9 +32,7 @@ class DataApi {
   x = await data.getMachineData();
   x = await data.getRecordData();
   x = await data.getTemplateData();
-  //x = await this.getWorkers();
-  // if (x.data != null)
-  //   flag = false;
+  x = await data.getWorkerData();
   return flag;
   }
 
@@ -53,6 +53,13 @@ class DataApi {
   Future<dynamic> getMachines() async {
     String url = this.getApi("getMachine");
     Uri uri = Uri.parse(url);
+    var response = await http.get(uri);
+    return response;
+  }
+
+  Future<dynamic> getMachine(String uid) async {
+    String url = this.getApi("getMachineUid");
+    Uri uri = Uri.parse(url + uid);
     var response = await http.get(uri);
     return response;
   }
@@ -82,6 +89,13 @@ class DataApi {
     String url = this.getApi("getWorkers");
     Uri uri = Uri.parse(url);
     var response = await http.get(uri);
+    return response;
+  }
+
+  Future<dynamic> putWorker(var data) async {
+    String url = this.getApi("getWorkers");
+    Uri uri = Uri.parse(url);
+    var response = await http.post(uri, body: data.toString(), headers: {"Content-Type": "application/json"});
     return response;
   }
 }

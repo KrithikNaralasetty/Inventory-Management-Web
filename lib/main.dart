@@ -44,30 +44,6 @@ class _MyHomePageState extends State<MyHomePage> {
 
   @override
   Widget build(BuildContext context) {
-    return FutureBuilder(
-        future: api.getData(),
-        builder: (BuildContext context, AsyncSnapshot<dynamic> snapshot) {
-          if (snapshot.hasData) {
-            return LoginPage();
-          } else {
-            return Center(
-              child: Row(
-                children: [
-                  Expanded(
-                    child: Center(
-                        child: Text(
-                      "Getting Data, please wait: ",
-                      style: cd.textSt,
-                    )),
-                  ),
-                  Expanded(
-                    child: Center(
-                        child: CircularProgressIndicator(color: cd.second)),
-                  ),
-                ],
-              ),
-            );
-          }
-        });
+    return LoginPage();
   }
 }

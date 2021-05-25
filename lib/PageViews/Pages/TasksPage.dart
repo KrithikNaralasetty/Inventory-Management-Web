@@ -47,7 +47,7 @@ class _taskState extends State<TasksPage> {
           children: [
             Expanded(
               child:
-                  Container(padding: EdgeInsets.all(5.0), child: Placeholder()),
+                  Container(padding: EdgeInsets.all(5.0), child: Container()),
             ),
           ],
         )),
