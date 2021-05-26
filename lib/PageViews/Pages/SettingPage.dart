@@ -38,7 +38,7 @@ class _settingsState extends State<SettingsPage> {
                 child: Center(
                   child: Text(
                     "Settings: Admin Alpha",
-                    style: cd.textSt,
+                    style: cd.textStTitle,
                   ),
                 ),
               ),

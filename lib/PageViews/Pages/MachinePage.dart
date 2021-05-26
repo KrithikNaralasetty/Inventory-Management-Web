@@ -27,7 +27,7 @@ class _MachinesPageState extends State<MachinesPage> {
           title: InkWell(
             child: Text(
               m[i].model.toString(),
-              style: textSt,
+              style: textStTitle,
             ),
             onLongPress: () {
               var content_string = "Serial No:" +
@@ -46,10 +46,10 @@ class _MachinesPageState extends State<MachinesPage> {
                   context: context,
                   builder: (BuildContext context) {
                     return AlertDialog(
-                      backgroundColor: Colors.black,
+                      backgroundColor: Colors.white,
                       title: Text(
                         m[i].model.toString(),
-                        style: textSt,
+                        style: textStTitle,
                       ),
                       content: SingleChildScrollView(
                         child: Text(
@@ -59,7 +59,7 @@ class _MachinesPageState extends State<MachinesPage> {
                             fontStyle: FontStyle.normal,
                             fontWeight: FontWeight.w400,
                             fontSize: 24,
-                            color: Colors.white,
+                            color: Colors.black,
                           ),
                         ),
                       ),
@@ -69,7 +69,7 @@ class _MachinesPageState extends State<MachinesPage> {
           ),
           subtitle: Text(
             m[i].doi.toString(),
-            style: textSt,
+            style: textStSubtitle,
           ),
         ),
       );
@@ -105,7 +105,7 @@ class _MachinesPageState extends State<MachinesPage> {
                       fontFamily: "FiraSans",
                       fontStyle: FontStyle.normal,
                       fontWeight: FontWeight.w400,
-                      fontSize: 32,
+                      fontSize: 30,
                     ),
                   ),
                 ),

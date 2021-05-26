@@ -69,7 +69,7 @@ class _templatesState extends State<TemplatesListPage> {
                       child: Center(
                         child: Text(
                           "List of Templates",
-                          style: textSt,
+                          style: textStTitle,
                         ),
                       ),
                     ),

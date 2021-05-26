@@ -33,6 +33,7 @@ class DataApi {
   x = await data.getRecordData();
   x = await data.getTemplateData();
   x = await data.getWorkerData();
+  debugPrint(data.workers.toString());
   return flag;
   }
 
@@ -93,7 +94,7 @@ class DataApi {
   }
 
   Future<dynamic> putWorker(var data) async {
-    String url = this.getApi("getWorkers");
+    String url = this.getApi("putWorker");
     Uri uri = Uri.parse(url);
     var response = await http.post(uri, body: data.toString(), headers: {"Content-Type": "application/json"});
     return response;

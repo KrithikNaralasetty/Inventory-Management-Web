@@ -3,6 +3,7 @@ import 'dart:ui';
 // ignore: avoid_web_libraries_in_flutter
 import 'dart:html' as html;
 import 'package:flutter/rendering.dart';
+import 'package:inventory_management_web/Data/APIs.dart';
 import 'package:inventory_management_web/Data/ColorData.dart';
 import 'package:inventory_management_web/Data/TablesData.dart';
 import 'package:inventory_management_web/PageViews/LocatorTool.dart';
@@ -45,6 +46,7 @@ class _Dashboard extends State<MainPage> {
             currentAccountPicture: Image.asset("assets/Images/logo_1.jpg"),
             accountName: Text(
               "Admin: $username",
+              style: textStSubtitle,
             ),
             accountEmail: TextButton(
               child: Text(
@@ -59,7 +61,10 @@ class _Dashboard extends State<MainPage> {
           //ListTile (OverView)
           new ListTile(
             leading: Icon(Icons.arrow_right_rounded),
-            title: Text("Overview"),
+            title: Text(
+              "Overview",
+              style: textStTitle,
+            ),
             onTap: () {
               Navigator.of(context).pop();
               setState(() {
@@ -72,7 +77,10 @@ class _Dashboard extends State<MainPage> {
           //ListTile (Machines Page)
           new ListTile(
             leading: Icon(Icons.arrow_right_rounded),
-            title: Text("Machines Page"),
+            title: Text(
+              "Machines Page",
+              style: textStTitle,
+            ),
             onTap: () {
               Navigator.of(context).pop();
               setState(() {
@@ -85,7 +93,10 @@ class _Dashboard extends State<MainPage> {
           //ListTile (Tasks Overview)
           new ListTile(
             leading: Icon(Icons.arrow_right_rounded),
-            title: Text("Tasks"),
+            title: Text(
+              "Tasks",
+              style: textStTitle,
+            ),
             onTap: () {
               Navigator.of(context).pop();
               setState(() {
@@ -98,7 +109,10 @@ class _Dashboard extends State<MainPage> {
           //ListTile (Create Machine Page)
           new ListTile(
             leading: Icon(Icons.arrow_right_rounded),
-            title: Text("Add/Create New Machine"),
+            title: Text(
+              "Add/Create New Machine",
+              style: textStTitle,
+            ),
             onTap: () {
               Navigator.of(context).pop();
               setState(() {
@@ -111,7 +125,10 @@ class _Dashboard extends State<MainPage> {
           //ListTile (Settings)
           new ListTile(
             leading: Icon(Icons.arrow_right_rounded),
-            title: Text("Settings"),
+            title: Text(
+              "Settings",
+              style: textStTitle,
+            ),
             onTap: () {
               Navigator.of(context).pop();
               setState(() {
@@ -124,7 +141,10 @@ class _Dashboard extends State<MainPage> {
           // ListTile (LogOut)
           new ListTile(
             leading: Icon(Icons.power_settings_new),
-            title: Text("Logout"),
+            title: Text(
+              "Logout",
+              style: textStTitle,
+            ),
             onTap: () {
               Navigator.of(context).pop();
               Navigator.of(context).pop();
@@ -144,9 +164,22 @@ class _Dashboard extends State<MainPage> {
           elevation: 0.0,
           title: Text(
             "Welcome, $username",
-            style: TextStyle(color: primary),
+            style: TextStyle(color: primary, fontSize: 24),
           ),
           iconTheme: IconThemeData(color: iconColor),
+          actions: [
+            IconButton(
+              icon: Icon(Icons.replay, color: iconColor),
+              onPressed: () async {
+                var x = api.getData();
+                  Navigator.pop(context);
+                  Navigator.push(context,
+                      MaterialPageRoute(builder: (BuildContext context) {
+                    return MainPage(this.username);
+                  }));
+              },
+            ),
+          ],
           centerTitle: true,
         ),
         //Body (Column of Screens)

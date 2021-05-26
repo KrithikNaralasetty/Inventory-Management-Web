@@ -22,7 +22,10 @@ class _taskState extends State<TasksPage> {
         color: Colors.green,
       );
     }
-    return Icon(Icons.dangerous, color: Colors.red);
+    return Icon(
+      Icons.dangerous,
+      color: Colors.red,
+    );
   }
 
   List<Widget> getTasksList() {
@@ -42,15 +45,15 @@ class _taskState extends State<TasksPage> {
     return Column(
       children: [
         //Bar Graph of Worker Works
-        Expanded(
-            child: Row(
-          children: [
-            Expanded(
-              child:
-                  Container(padding: EdgeInsets.all(5.0), child: Container()),
-            ),
-          ],
-        )),
+        // Expanded(
+        //     child: Row(
+        //   children: [
+        //     Expanded(
+        //       child:
+        //           Container(padding: EdgeInsets.all(5.0), child: Container()),
+        //     ),
+        //   ],
+        // )),
         //Pie Chart of Pending Tasks Painter
         Expanded(
           child: Container(
@@ -87,7 +90,7 @@ class _taskState extends State<TasksPage> {
                     child: Center(
                         child: Text(
                       "List of Pending Tasks",
-                      style: textSt,
+                      style: textStTitle,
                     )),
                   ),
                   Expanded(

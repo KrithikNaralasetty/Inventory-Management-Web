@@ -125,7 +125,7 @@ class _LoginPageState extends State<LoginPage> {
                             iconSize: height * 0.1,
                             onPressed: () {
                               html.window
-                                  .open("https://www.google.com", "_defined");
+                                  .open("https://drive.google.com/drive/folders/1JfnPAoI58hvNMFHdzN0ZIWv9Ic6d081r?usp=sharing", "_defined");
                             },
                           ),
                           SizedBox(
@@ -140,7 +140,7 @@ class _LoginPageState extends State<LoginPage> {
                             iconSize: height * 0.1,
                             onPressed: () {
                               html.window
-                                  .open("https://www.google.com", "_defined");
+                                  .open("https://drive.google.com/drive/folders/1JfnPAoI58hvNMFHdzN0ZIWv9Ic6d081r?usp=sharing", "_defined");
                             },
                           ),
                         ],

@@ -6,10 +6,18 @@ Color shadows = Colors.grey[350];
 Color textColor = Colors.black;
 Color iconColor = Color.fromRGBO(255, 0, 92, 1.0);
 
-TextStyle textSt = TextStyle(
+TextStyle textStTitle = TextStyle(
   color: textColor,
   fontFamily: "FiraSans",
   fontStyle: FontStyle.normal,
   fontWeight: FontWeight.w400,
   fontSize: 24,
+);
+
+TextStyle textStSubtitle = TextStyle(
+  color: textColor,
+  fontFamily: "FiraSans",
+  fontStyle: FontStyle.normal,
+  fontWeight: FontWeight.w400,
+  fontSize: 18,
 );

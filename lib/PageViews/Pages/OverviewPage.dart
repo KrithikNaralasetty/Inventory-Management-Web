@@ -45,18 +45,17 @@ class _OverviewState extends State<Overview> {
       pt.add(Container(
         padding: EdgeInsets.all(10.0),
         child: ListTile(
-          tileColor: primary,
           leading: Icon(
             Icons.bubble_chart,
             color: iconColor,
           ),
           subtitle: Text(
             dates.toString(),
-            style: textSt,
+            style: textStSubtitle,
           ),
           title: Text(
             desc.toString(),
-            style: textSt,
+            style: textStTitle,
           ),
           trailing: Icon(
             Icons.work,
@@ -72,7 +71,6 @@ class _OverviewState extends State<Overview> {
           children: [
             Expanded(
               child: Container(
-                color: primary,
               ),
             ),
             Expanded(
@@ -80,7 +78,7 @@ class _OverviewState extends State<Overview> {
               child: Center(
                 child: Text(
                   "Pending Tasks: $len",
-                  style: textSt,
+                  style: textStTitle,
                 ),
               ),
             ),
@@ -119,7 +117,7 @@ class _OverviewState extends State<Overview> {
       Center(
         child: Text(
           "Equipment Types",
-          style: textSt,
+          style: textStTitle,
         ),
       ),
     ];
@@ -140,7 +138,7 @@ class _OverviewState extends State<Overview> {
           ),
           title: Text(
             i.toString(),
-            style: textSt,
+            style: textStTitle,
           ),
           trailing: Icon(
             Icons.check_box_outline_blank,
@@ -160,7 +158,7 @@ class _OverviewState extends State<Overview> {
       Center(
         child: Text(
           "Recently Serviced Machines",
-          style: textSt,
+          style: textStTitle,
         ),
       ),
     ];
@@ -169,8 +167,8 @@ class _OverviewState extends State<Overview> {
     for (var i = 0; i < len; i++) {
       srvices.add(
         ListTile(
-          title: Text(srvs[i].sno.toString() + " " + srvs[i].wid_s.toString()),
-          subtitle: Text(srvs[i].dos.toString()),
+          title: Text(srvs[i].sno.toString() + " " + srvs[i].wid_s.toString(),style: textStTitle,),
+          subtitle: Text(srvs[i].dos.toString(),style: textStSubtitle,),
           leading: Icon(
             Icons.arrow_right_alt,
             color: iconColor,
@@ -188,13 +186,13 @@ class _OverviewState extends State<Overview> {
       ),
       Row(
         children: [
-          Expanded(child: Container(color: primary)),
+          Expanded(child: Container()),
           Expanded(
               flex: 4,
               child: Center(
                 child: Text(
                   "Machines List",
-                  style: textSt,
+                  style: textStTitle,
                 ),
               )),
           Expanded(
@@ -215,8 +213,8 @@ class _OverviewState extends State<Overview> {
     int len = mcs.length;
     for (var i = 0; i < len; i++) {
       machns.add(ListTile(
-        title: Text(mcs[i].eqtype.toString()),
-        subtitle: Text(mcs[i].sno.toString()),
+        title: Text(mcs[i].eqtype.toString(),style: textStTitle,),
+        subtitle: Text(mcs[i].sno.toString(), style: textStSubtitle),
         leading: Icon(
           Icons.reviews_rounded,
           color: iconColor,
@@ -241,7 +239,7 @@ class _OverviewState extends State<Overview> {
             child: Center(
               child: Text(
                 "List of Available Templates",
-                style: textSt,
+                style: textStTitle,
               ),
             ),
           ),
@@ -269,6 +267,7 @@ class _OverviewState extends State<Overview> {
           ),
           title: Text(
             templates[i].tname.toString(),
+            style: textStTitle,
           ),
           trailing: Icon(
             Icons.check_box_outline_blank,
@@ -291,7 +290,7 @@ class _OverviewState extends State<Overview> {
             Icons.person,
             color: iconColor,
           ),
-          title: Text(wrkrs[i].wname.toString()),
+          title: Text(wrkrs[i].wname.toString(),style: textStTitle,),
           trailing: TextButton(
               onPressed: () {
                 showDialog(
@@ -300,11 +299,11 @@ class _OverviewState extends State<Overview> {
                       return AlertDialog(
                         title: Text(
                           "Do you want to terminate this worker?",
-                          style: textSt,
+                          style: textStTitle,
                         ),
                         content: Text(
                           "Once you do this, there is no way to get back the same worker details.\nDo you still want to go ahead?",
-                          style: textSt,
+                          style: textStSubtitle,
                         ),
                         backgroundColor: Colors.black,
                         actions: [
@@ -349,7 +348,7 @@ class _OverviewState extends State<Overview> {
               child: Center(
                 child: Text(
                   "Workers List",
-                  style: textSt,
+                  style: textStTitle,
                 ),
               ),
             ),
@@ -360,7 +359,7 @@ class _OverviewState extends State<Overview> {
                   context: context,
                   builder: (BuildContext context) {
                     return AlertDialog(
-                      title: Text("Add New Worker:"),
+                      title: Text("Add New Worker:", style: textStTitle,),
                       content: TextField(
                         decoration: InputDecoration(hintText: "Worker Name"),
                         onChanged: (value) {
@@ -371,11 +370,11 @@ class _OverviewState extends State<Overview> {
                       ),
                       actions: [
                         TextButton(onPressed: () async{
-                          var y = new data.WorkerData({
-                            "wid": 3,
+                          var y = {
+                            "wid": data.workers.length+1,
                             "wpic": "https://i.ibb.co/GnqT0NV/Whats-App-Image-2021-03-26-at-1-11-23-PM.jpg",
                             "wname": this.wname.toString(),
-                          });
+                          };
                           var x = api.putWorker(json.encode(y));
                           debugPrint(x.toString());
                           Navigator.pop(context);
@@ -405,7 +404,8 @@ class _OverviewState extends State<Overview> {
     h = MediaQuery.of(context).size.height;
     w = MediaQuery.of(context).size.width;
 
-    return SafeArea(
+    return Container(
+      padding: EdgeInsets.all(10.0),
       child: Center(
         child: GridView.count(
           crossAxisCount: 3,
@@ -417,7 +417,7 @@ class _OverviewState extends State<Overview> {
             Container(
               child: Card(
                 elevation: 20.0,
-                color: cd.primary,
+                color: Colors.white,
                 child: Column(
                   children: [
                     Expanded(
@@ -433,7 +433,7 @@ class _OverviewState extends State<Overview> {
             Container(
               child: Card(
                   elevation: 20.0,
-                  color: cd.primary,
+                  color: Colors.white,
                   child: ListView(
                     children: get_equipments(),
                   )),
@@ -442,7 +442,7 @@ class _OverviewState extends State<Overview> {
             Container(
               child: Card(
                   elevation: 20.0,
-                  color: cd.primary,
+                  color: Colors.white,
                   child: ListView(
                     children: get_recent_services(),
                   )),
@@ -451,7 +451,7 @@ class _OverviewState extends State<Overview> {
             Container(
               child: Card(
                 elevation: 20.0,
-                color: cd.primary,
+                color: Colors.white,
                 child: ListView(
                   children: get_machines_list(),
                 ),
@@ -461,7 +461,7 @@ class _OverviewState extends State<Overview> {
             Container(
               child: Card(
                   elevation: 20.0,
-                  color: cd.primary,
+                  color: Colors.white,
                   child: ListView(
                     children: get_templates_list(),
                   )),
@@ -470,7 +470,7 @@ class _OverviewState extends State<Overview> {
             Container(
               child: Card(
                 elevation: 20.0,
-                color: cd.primary,
+                color: Colors.white,
                 child: get_workers_list(),
               ),
             ),

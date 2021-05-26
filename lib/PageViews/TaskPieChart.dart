@@ -62,7 +62,7 @@ class _TaskPieChartWidgetState extends State<TaskPieChartWidget> {
                   ],
                 ),
                 child: Center(
-                  child: Text(data.records.length.toString(),style: cd.textSt,),
+                  child: Text(data.records.length.toString(),style: cd.textStTitle,),
                 ),
               ),
             ),
@@ -78,10 +78,10 @@ class _TaskPieChartWidgetState extends State<TaskPieChartWidget> {
       children: [
         //Title of The Pie Chart
         Expanded(
-          child: Text(
+          child: Center(child: Text(
             "Statistic of Pending Tasks",
-            style: cd.textSt,
-          ),
+            style: cd.textStTitle,
+          ),),
         ),
         //Data in the Pie Chart
         Expanded(
@@ -110,7 +110,7 @@ class _TaskPieChartWidgetState extends State<TaskPieChartWidget> {
                               flex: 20,
                               child: Text(
                                 "Critical Tasks to perform",
-                                style: cd.textSt,
+                                style: cd.textStSubtitle,
                               ),
                             )
                           ],
@@ -133,7 +133,7 @@ class _TaskPieChartWidgetState extends State<TaskPieChartWidget> {
                               flex: 20,
                               child: Text(
                                 "Completed Tasks",
-                                style: cd.textSt,
+                                style: cd.textStSubtitle,
                               ),
                             ),
                           ],
@@ -163,7 +163,7 @@ class PieChart extends CustomPainter {
   @override
   void paint(Canvas canvas, Size size) {
     Offset center = Offset(size.width / 2, size.height / 2);
-    double radius = min(size.width / 2, size.height / 2);
+    double radius = min(size.width, size.height / 2);
 
     var paint = Paint()
       ..style = PaintingStyle.stroke
