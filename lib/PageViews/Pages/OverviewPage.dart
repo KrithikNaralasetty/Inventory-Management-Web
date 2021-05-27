@@ -4,6 +4,7 @@ import 'package:flutter/material.dart';
 import 'dart:convert';
 import 'package:inventory_management_web/Data/APIs.dart';
 import 'package:inventory_management_web/Data/ColorData.dart';
+import 'dart:core';
 import 'package:inventory_management_web/PageViews/LocatorTool.dart';
 import 'package:inventory_management_web/PageViews/NavigationServiceTool.dart';
 import 'package:inventory_management_web/data/ColorData.dart' as cd;
@@ -37,11 +38,21 @@ class _OverviewState extends State<Overview> {
     List<Widget> pt = [];
     var tasks = data.records;
     int len = tasks.length;
+    Map<String, data.MachineData> uniqueUids = {};
+    var uidSet = new Set();
+    for (var i in tasks){
+      uidSet.add(i.uid);
+    }
+    for (var i in data.machines){
+      if (uidSet.contains(i.uid)){
+        uniqueUids[i.uid] = i;
+      }
+    }
 
     for (var i = 0; i < tasks.length; i++) {
       var works = tasks[i].status;
       var dates = tasks[i].dos;
-      var desc = tasks[i].uid;
+      var desc = uniqueUids[tasks[i].uid].eqtype + " "+ uniqueUids[tasks[i].uid].model;
       pt.add(Container(
         padding: EdgeInsets.all(10.0),
         child: ListTile(
@@ -151,23 +162,25 @@ class _OverviewState extends State<Overview> {
   }
 
   List<Widget> get_recent_services() {
-    List<Widget> srvices = [
-      SizedBox(
-        height: 20.0,
-      ),
-      Center(
-        child: Text(
-          "Recently Serviced Machines",
-          style: textStTitle,
-        ),
-      ),
-    ];
+
+    List<Widget> s = [];
     var srvs = data.records;
     int len = srvs.length;
+
+    Map<String, data.MachineData> uniqueUids = {};
+    var uidSet = new Set();
+    for (var i in srvs){
+      uidSet.add(i.uid);
+    }
+    for (var i in data.machines){
+      if (uidSet.contains(i.uid)){
+        uniqueUids[i.uid] = i;
+      }
+    }
     for (var i = 0; i < len; i++) {
-      srvices.add(
+      s.add(
         ListTile(
-          title: Text(srvs[i].sno.toString() + " " + srvs[i].wid_s.toString(),style: textStTitle,),
+          title: Text(uniqueUids[srvs[i].uid].eqtype + " " + uniqueUids[srvs[i].uid].model,style: textStTitle,),
           subtitle: Text(srvs[i].dos.toString(),style: textStSubtitle,),
           leading: Icon(
             Icons.arrow_right_alt,
@@ -176,6 +189,21 @@ class _OverviewState extends State<Overview> {
         ),
       );
     }
+
+    List<Widget> srvices = [
+      Expanded(
+        child: Row(children: [
+          Expanded(child: Container()),
+          Expanded(child: Center(child: Text("Recently Serviced records",style: textStTitle,)),flex: 8,),
+          Expanded(child: Container()),
+        ],),
+      ),
+      Expanded(
+        flex: 9,
+        child: ListView(children: s,),
+      ),
+    ];
+    
     return srvices;
   }
 
@@ -443,9 +471,7 @@ class _OverviewState extends State<Overview> {
               child: Card(
                   elevation: 20.0,
                   color: Colors.white,
-                  child: ListView(
-                    children: get_recent_services(),
-                  )),
+                  child: Column(children: get_recent_services(),)),
             ),
             //List of Machines
             Container(

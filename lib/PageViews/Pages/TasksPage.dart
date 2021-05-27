@@ -30,11 +30,27 @@ class _taskState extends State<TasksPage> {
 
   List<Widget> getTasksList() {
     List<Widget> taskTiles = [];
+    Map<String, data.MachineData> uniqueUids = {};
+    var uidSet = new Set();
+    for (var i in tasks) {
+      uidSet.add(i.uid);
+    }
+    for (var i in data.machines) {
+      if (uidSet.contains(i.uid)) {
+        uniqueUids[i.uid] = i;
+      }
+    }
     for (var i in tasks) {
       taskTiles.add(ListTile(
         leading: Icon(Icons.document_scanner_outlined, color: iconColor),
-        title: Text(i.dos.toString()),
-        subtitle: Text(i.sno.toString()),
+        title: Text(
+          uniqueUids[i.uid].eqtype + " " + uniqueUids[i.uid].model,
+          style: textStTitle,
+        ),
+        subtitle: Text(
+          i.dos.toString(),
+          style: textStSubtitle,
+        ),
         trailing: getStatusIcon(i.status),
       ));
     }
