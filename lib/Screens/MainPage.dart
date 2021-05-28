@@ -28,6 +28,12 @@ class _Dashboard extends State<MainPage> {
     this.username = user;
   }
 
+  @protected
+  @mustCallSuper
+  void initState(){
+  }
+
+
   Widget build(BuildContext context) {
     h = MediaQuery.of(context).size.height;
     w = MediaQuery.of(context).size.width;
@@ -164,7 +170,7 @@ class _Dashboard extends State<MainPage> {
           elevation: 0.0,
           title: Text(
             "Welcome, $username",
-            style: TextStyle(color: Colors.black, fontSize: 24),
+            style: TextStyle(color: Colors.white, fontSize: 24),
           ),
           iconTheme: IconThemeData(color: iconColor),
           actions: [
@@ -179,7 +185,7 @@ class _Dashboard extends State<MainPage> {
                   }));
               },
             ),
-          ],
+          ], 
           centerTitle: true,
         ),
         //Body (Column of Screens)

@@ -6,6 +6,7 @@ import 'package:flutter/rendering.dart';
 import 'package:inventory_management_web/Data/APIs.dart';
 import 'package:inventory_management_web/Data/ColorData.dart';
 import 'package:inventory_management_web/Data/TablesData.dart' as data;
+import 'package:inventory_management_web/PageViews/LocatorTool.dart';
 import 'MainPage.dart';
 
 class LoginPage extends StatefulWidget {
@@ -31,6 +32,12 @@ class _LoginPageState extends State<LoginPage> {
       return Color.fromARGB(255, 31, 27, 62);
     }
     return Colors.white;
+  }
+
+  @protected
+  @mustCallSuper
+  void initState(){
+    setupPageLocator();
   }
 
   @override

@@ -40,11 +40,11 @@ class _OverviewState extends State<Overview> {
     int len = tasks.length;
     Map<String, data.MachineData> uniqueUids = {};
     var uidSet = new Set();
-    for (var i in tasks){
+    for (var i in tasks) {
       uidSet.add(i.uid);
     }
-    for (var i in data.machines){
-      if (uidSet.contains(i.uid)){
+    for (var i in data.machines) {
+      if (uidSet.contains(i.uid)) {
         uniqueUids[i.uid] = i;
       }
     }
@@ -52,7 +52,9 @@ class _OverviewState extends State<Overview> {
     for (var i = 0; i < tasks.length; i++) {
       var works = tasks[i].status;
       var dates = tasks[i].dos;
-      var desc = uniqueUids[tasks[i].uid].eqtype + " "+ uniqueUids[tasks[i].uid].model;
+      var desc = uniqueUids[tasks[i].uid].eqtype +
+          " " +
+          uniqueUids[tasks[i].uid].model;
       pt.add(Container(
         padding: EdgeInsets.all(10.0),
         child: ListTile(
@@ -81,8 +83,7 @@ class _OverviewState extends State<Overview> {
         child: Row(
           children: [
             Expanded(
-              child: Container(
-              ),
+              child: Container(),
             ),
             Expanded(
               flex: 4,
@@ -162,26 +163,33 @@ class _OverviewState extends State<Overview> {
   }
 
   List<Widget> get_recent_services() {
-
     List<Widget> s = [];
     var srvs = data.records;
     int len = srvs.length;
 
     Map<String, data.MachineData> uniqueUids = {};
     var uidSet = new Set();
-    for (var i in srvs){
+    for (var i in srvs) {
       uidSet.add(i.uid);
     }
-    for (var i in data.machines){
-      if (uidSet.contains(i.uid)){
+    for (var i in data.machines) {
+      if (uidSet.contains(i.uid)) {
         uniqueUids[i.uid] = i;
       }
     }
     for (var i = 0; i < len; i++) {
       s.add(
         ListTile(
-          title: Text(uniqueUids[srvs[i].uid].eqtype + " " + uniqueUids[srvs[i].uid].model,style: textStTitle,),
-          subtitle: Text(srvs[i].dos.toString(),style: textStSubtitle,),
+          title: Text(
+            uniqueUids[srvs[i].uid].eqtype +
+                " " +
+                uniqueUids[srvs[i].uid].model,
+            style: textStTitle,
+          ),
+          subtitle: Text(
+            srvs[i].dos.toString(),
+            style: textStSubtitle,
+          ),
           leading: Icon(
             Icons.arrow_right_alt,
             color: iconColor,
@@ -192,18 +200,29 @@ class _OverviewState extends State<Overview> {
 
     List<Widget> srvices = [
       Expanded(
-        child: Row(children: [
-          Expanded(child: Container()),
-          Expanded(child: Center(child: Text("Recently Serviced records",style: textStTitle,)),flex: 8,),
-          Expanded(child: Container()),
-        ],),
+        child: Row(
+          children: [
+            Expanded(child: Container()),
+            Expanded(
+              child: Center(
+                  child: Text(
+                "Recently Serviced records",
+                style: textStTitle,
+              )),
+              flex: 8,
+            ),
+            Expanded(child: Container()),
+          ],
+        ),
       ),
       Expanded(
         flex: 9,
-        child: ListView(children: s,),
+        child: ListView(
+          children: s,
+        ),
       ),
     ];
-    
+
     return srvices;
   }
 
@@ -241,7 +260,10 @@ class _OverviewState extends State<Overview> {
     int len = mcs.length;
     for (var i = 0; i < len; i++) {
       machns.add(ListTile(
-        title: Text(mcs[i].eqtype.toString(),style: textStTitle,),
+        title: Text(
+          mcs[i].eqtype.toString(),
+          style: textStTitle,
+        ),
         subtitle: Text(mcs[i].sno.toString(), style: textStSubtitle),
         leading: Icon(
           Icons.reviews_rounded,
@@ -314,11 +336,23 @@ class _OverviewState extends State<Overview> {
     for (var i = 0; i < len; i++) {
       worker_list.add(
         ListTile(
-          leading: Icon(
-            Icons.person,
-            color: iconColor,
+          leading: ConstrainedBox(
+            child: Image.network(wrkrs[i].wpic,fit: BoxFit.cover),
+            constraints: BoxConstraints(
+              minWidth: 24,
+              minHeight: 24,
+              maxWidth: 48,
+              maxHeight: 48,
+            ),
           ),
-          title: Text(wrkrs[i].wname.toString(),style: textStTitle,),
+          title: Text(
+            wrkrs[i].wname.toString(),
+            style: textStTitle,
+          ),
+          subtitle: Text(
+            wrkrs[i].wid.toString(),
+            style: textStSubtitle,
+          ),
           trailing: TextButton(
               onPressed: () {
                 showDialog(
@@ -387,7 +421,10 @@ class _OverviewState extends State<Overview> {
                   context: context,
                   builder: (BuildContext context) {
                     return AlertDialog(
-                      title: Text("Add New Worker:", style: textStTitle,),
+                      title: Text(
+                        "Add New Worker:",
+                        style: textStTitle,
+                      ),
                       content: TextField(
                         decoration: InputDecoration(hintText: "Worker Name"),
                         onChanged: (value) {
@@ -397,16 +434,19 @@ class _OverviewState extends State<Overview> {
                         },
                       ),
                       actions: [
-                        TextButton(onPressed: () async{
-                          var y = {
-                            "wid": data.workers.length+1,
-                            "wpic": "https://i.ibb.co/GnqT0NV/Whats-App-Image-2021-03-26-at-1-11-23-PM.jpg",
-                            "wname": this.wname.toString(),
-                          };
-                          var x = api.putWorker(json.encode(y));
-                          debugPrint(x.toString());
-                          Navigator.pop(context);
-                        }, child: Text("Add")),
+                        TextButton(
+                            onPressed: () async {
+                              var y = {
+                                "wid": data.workers.length + 1,
+                                "wpic":
+                                    "https://i.ibb.co/GnqT0NV/Whats-App-Image-2021-03-26-at-1-11-23-PM.jpg",
+                                "wname": this.wname.toString(),
+                              };
+                              var x = api.putWorker(json.encode(y));
+                              debugPrint(x.toString());
+                              Navigator.pop(context);
+                            },
+                            child: Text("Add")),
                       ],
                     );
                   },
@@ -471,7 +511,9 @@ class _OverviewState extends State<Overview> {
               child: Card(
                   elevation: 20.0,
                   color: Colors.white,
-                  child: Column(children: get_recent_services(),)),
+                  child: Column(
+                    children: get_recent_services(),
+                  )),
             ),
             //List of Machines
             Container(

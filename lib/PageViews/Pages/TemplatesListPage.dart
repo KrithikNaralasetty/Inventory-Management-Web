@@ -27,7 +27,8 @@ class _templatesState extends State<TemplatesListPage> {
             Icons.document_scanner,
             color: iconColor,
           ),
-          title: Text(tmplts[i].tname),
+          title: Text(tmplts[i].tname,
+          style: textStTitle,),
           onTap: () {
             setState(() {
               if (tmplts[i].template != "null") {
@@ -54,7 +55,7 @@ class _templatesState extends State<TemplatesListPage> {
                     Expanded(
                       child: IconButton(
                         icon: Icon(
-                          Icons.arrow_back_ios_sharp,
+                          Icons.arrow_back_outlined,
                           color: iconColor,
                         ),
                         onPressed: () {

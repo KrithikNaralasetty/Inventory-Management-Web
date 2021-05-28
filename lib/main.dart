@@ -12,7 +12,6 @@ import 'package:inventory_management_web/Data/APIs.dart';
 import 'PageViews/LocatorTool.dart';
 
 void main() {
-  setupPageLocator();
   runApp(MyApp());
 }
 
