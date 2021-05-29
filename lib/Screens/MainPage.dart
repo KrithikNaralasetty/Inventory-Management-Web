@@ -170,7 +170,7 @@ class _Dashboard extends State<MainPage> {
           elevation: 0.0,
           title: Text(
             "Welcome, $username",
-            style: TextStyle(color: Colors.white, fontSize: 24),
+            style: TextStyle(color: primary, fontSize: 24),
           ),
           iconTheme: IconThemeData(color: iconColor),
           actions: [

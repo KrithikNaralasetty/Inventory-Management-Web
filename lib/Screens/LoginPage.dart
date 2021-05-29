@@ -132,7 +132,7 @@ class _LoginPageState extends State<LoginPage> {
                             iconSize: height * 0.1,
                             onPressed: () {
                               html.window
-                                  .open("https://drive.google.com/drive/folders/1JfnPAoI58hvNMFHdzN0ZIWv9Ic6d081r?usp=sharing", "_defined");
+                                  .open("https://www.google.com/", "Application Link 1");
                             },
                           ),
                           SizedBox(
@@ -147,7 +147,7 @@ class _LoginPageState extends State<LoginPage> {
                             iconSize: height * 0.1,
                             onPressed: () {
                               html.window
-                                  .open("https://drive.google.com/drive/folders/1JfnPAoI58hvNMFHdzN0ZIWv9Ic6d081r?usp=sharing", "_defined");
+                                  .open("https://www.google.com/", "Application Link 2");
                             },
                           ),
                         ],
@@ -395,7 +395,7 @@ class _LoginPageState extends State<LoginPage> {
       //Alert Dialog Box (Review redirect)
       floatingActionButton: FloatingActionButton(
         elevation: 0.0,
-        backgroundColor: primary,
+        backgroundColor: Colors.white,
         child: Icon(
           Icons.question_answer_rounded,
           color: iconColor,
@@ -406,7 +406,7 @@ class _LoginPageState extends State<LoginPage> {
                 context: context,
                 builder: (BuildContext context) {
                   return AlertDialog(
-                    backgroundColor: primary,
+                    backgroundColor: Colors.white,
                     title: Text(
                       "Want to know more about the application? or have issues to report?\nMessage us on our project board",
                       style: TextStyle(

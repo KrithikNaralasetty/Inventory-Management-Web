@@ -3,13 +3,12 @@ import 'package:http/http.dart' as http;
 import 'package:inventory_management_web/Data/TablesData.dart' as data;
 import 'package:flutter/material.dart';
 
-const String mainURL = "https://formfield.azurewebsites.net/";
-final DataApi api = DataApi(mainURL);
+final DataApi api = DataApi();
 
 class DataApi {
-  final String mainURL;
+  final String mainURL = "https://formfield.azurewebsites.net/";
   Map<String, String> functions = {};
-  DataApi(this.mainURL){
+  DataApi(){
     this.functions["getTemplate"] = mainURL+"gettemplates";
     this.functions["putTemplate"] = mainURL+"puttemplate";
     this.functions["getMachine"] = mainURL+"getmachines";
@@ -26,14 +25,12 @@ class DataApi {
   }
 
   Future<dynamic> getData() async{
-  // ignore: unused_local_variable
   var x;
   bool flag = true;
   x = await data.getMachineData();
   x = await data.getRecordData();
   x = await data.getTemplateData();
   x = await data.getWorkerData();
-  debugPrint(data.workers.toString());
   return flag;
   }
 

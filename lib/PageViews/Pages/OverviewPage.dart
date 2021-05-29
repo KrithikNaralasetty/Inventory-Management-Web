@@ -367,14 +367,14 @@ class _OverviewState extends State<Overview> {
                           "Once you do this, there is no way to get back the same worker details.\nDo you still want to go ahead?",
                           style: textStSubtitle,
                         ),
-                        backgroundColor: Colors.black,
+                        backgroundColor: Colors.white,
                         actions: [
                           TextButton(
                             onPressed: () {},
                             child: Text(
                               "Yes",
                               style: TextStyle(
-                                color: Colors.white,
+                                color: Colors.black,
                               ),
                             ),
                           ),
@@ -385,7 +385,7 @@ class _OverviewState extends State<Overview> {
                               child: Text(
                                 "No",
                                 style: TextStyle(
-                                  color: Colors.white,
+                                  color: Colors.black,
                                 ),
                               )),
                         ],
